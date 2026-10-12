@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bhumitra: Find any plot in Odisha, with its official land record</title>
+  <meta name="description" content="Bhumitra shows official plot boundaries, Record of Rights (RoR), government land value and registration cost for any plot in Odisha. Free to download on iPhone.">
+  <meta name="theme-color" content="#7600ff">
+  <meta property="og:title" content="Bhumitra: Your land, one tap away">
+  <meta property="og:description" content="See any plot's boundary, owner record and government value on your phone. Built for Odisha by PrettyPlot.">
+  <meta property="og:image" content="assets/img/app-icon.webp">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta name="apple-itunes-app" content="app-id=6760656162">
+  <link rel="preload" href="assets/fonts/GoogleSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/GoogleSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Shared SVG symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.37 1.43c0 1.14-.5 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.2-2.98.81-.94 2.15-1.64 3.25-1.68.03.13.06.28.06.43zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8C3.96 18.38 2.93 15.57 2.93 12.92c0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.67.95 3.6.95.86 0 2.22-1.01 3.9-1.01.61 0 2.88.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.95 4.45z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path fill="#00d7fe" d="M3.6 1.8 13.3 11.5l-9.7 9.7c-.37-.2-.6-.6-.6-1.1V2.9c0-.5.23-.9.6-1.1z"/><path fill="#00f076" d="M16.6 8.2l-3.3 3.3L3.6 1.8c.33-.13.73-.1 1.1.1l11.9 6.3z"/><path fill="#ffc900" d="M20.4 10.4c.8.5.8 1.7 0 2.2l-3.8 2.2-3.3-3.3 3.3-3.3 3.8 2.2z"/><path fill="#ff3a44" d="M16.6 14.8 4.7 21.1c-.37.2-.77.23-1.1.1l9.7-9.7 3.3 3.3z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></g></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></g></symbol>
+  <symbol id="i-locate" viewBox="0 0 24 24"><path fill="currentColor" d="M21.7 2.3a1 1 0 0 0-1.07-.22l-18 7a1 1 0 0 0 .1 1.9l7.6 1.9 1.9 7.6a1 1 0 0 0 1.9.1l7-18a1 1 0 0 0-.23-1.08z"/></symbol>
+</svg>
+
+<header class="nav" id="nav">
+  <div class="container nav__inner">
+    <a class="brand" href="#top" aria-label="Bhumitra home">
+      <img src="assets/img/app-icon.webp" alt="" width="36" height="36">
+      Bhumitra
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#problem">Why Bhumitra</a>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a class="btn btn--brand js-smart-download" href="#download">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="top">
+    <div class="container hero__grid">
+      <div class="reveal">
+        <span class="eyebrow"><span class="dot"><svg><use href="#i-pin"/></svg></span>Now covering all 30 districts of Odisha</span>
+        <h1>Your land,<br><span class="mark">one tap</span> <span class="brand-text">away.</span></h1>
+        <p class="lead">Stand on any plot and Bhumitra shows its exact boundary, its official owner record and its government value, right on your phone. You don't need a Khata number, an office visit or a broker.</p>
+        <div class="stores">
+          <a class="store js-ios" href="https://apps.apple.com/in/app/bhumitra/id6760656162" target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#i-apple"/></svg>
+            <span><small>Download on the</small><strong>App Store</strong></span>
+          </a>
+          <a class="store js-android" href="#download">
+            <svg aria-hidden="true"><use href="#i-play"/></svg>
+            <span><small>Get it on</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+        <div class="hero__trust">
+          <span><svg><use href="#i-check"/></svg>Official Bhulekh records</span>
+          <span><svg><use href="#i-check"/></svg>Free to download</span>
+          <span><svg><use href="#i-check"/></svg>English &amp; ଓଡ଼ିଆ</span>
+        </div>
+      </div>
+
+      <div class="phone-wrap reveal">
+        <div class="float float--a">
+          <span class="float__ico" style="background:#fff8cc;color:#8a6d00"><svg><use href="#i-pin"/></svg></span>
+          <span><b>Plot found</b><small>in 4 seconds</small></span>
+        </div>
+        <div class="float float--b">
+          <span class="float__ico" style="background:#e9f9ee;color:#16a34a"><svg><use href="#i-shield"/></svg></span>
+          <span><b>RoR verified</b><small>Odisha Bhulekh</small></span>
+        </div>
+
+        <img class="phone-shot" src="assets/img/hero-device.png" width="803" height="1568"
+             alt="Bhumitra app showing the Land Details screen for Plot 450 in Keonjhar — district, tahsil, village and the official ownership record with owner shares" loading="eager">
+      </div>
+    </div>
+    <div class="hero__land" role="img" aria-label="Green fields of rural Odisha with a small purple-roofed house"></div>
+  </section>
+
+  <!-- ===== PROBLEM ===== -->
+  <section class="section problem" id="problem">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="kicker">The problem</p>
+        <h2>Checking a piece of land shouldn't take weeks.</h2>
+        <p>Land is usually a family's biggest asset, and the information about it has always been hard to get.</p>
+      </div>
+      <div class="pains">
+        <article class="pain reveal">
+          <div class="pain__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg></div>
+          <h3>Rounds of office visits</h3>
+          <p>Tahsil and RI office trips, long queues and lost workdays, only to find out who a plot belongs to.</p>
+        </article>
+        <article class="pain reveal">
+          <div class="pain__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div>
+          <h3>Numbers nobody remembers</h3>
+          <p>Government portals ask for Khata and plot numbers first. Most people only know where the land is.</p>
+        </article>
+        <article class="pain reveal">
+          <div class="pain__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg></div>
+          <h3>Relying on someone's word</h3>
+          <p>Boundaries, ownership and price usually come from a broker, and you can't easily check any of it.</p>
+        </article>
+      </div>
+      <div class="pivot reveal">
+        <img src="assets/img/app-icon.webp" alt="" width="60" height="60" loading="lazy">
+        <p>Bhumitra works from <span>where you're standing</span>. Tap once and the official record for that plot opens on your phone.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section" id="how">
+    <div class="container">
+      <div class="section__head center reveal">
+        <p class="kicker">How it works</p>
+        <h2>From field to official record in 3 taps.</h2>
+        <p>You don't need forms or numbers. If you can open a map, you can use Bhumitra.</p>
+      </div>
+      <div class="steps">
+        <article class="step reveal">
+          <div class="step__art">
+            <svg viewBox="0 0 320 250" aria-hidden="true">
+              <rect x="110" y="24" width="100" height="200" rx="22" fill="#111418"/>
+              <rect x="116" y="30" width="88" height="188" rx="17" fill="#3f5a2a"/>
+              <g stroke="#ffe100" stroke-width="1.4" fill="none" opacity=".85"><path d="M116 90 L204 76M116 150 L204 136M150 30 L160 218"/></g>
+              <circle class="pulse" cx="160" cy="124" r="14" fill="#7600ff"/>
+              <circle cx="160" cy="124" r="9" fill="#fff"/><circle cx="160" cy="124" r="6" fill="#7600ff"/>
+              <circle cx="186" cy="192" r="13" fill="#fff"/>
+              <path d="M192 186 177 192l6 1.5 1.5 6z" fill="#7600ff"/>
+              <circle cx="232" cy="192" r="16" fill="none" stroke="#7600ff" stroke-width="2" stroke-dasharray="4 4" opacity=".6"/>
+            </svg>
+          </div>
+          <span class="step__num">1</span>
+          <h3>Tap "locate"</h3>
+          <p>Bhumitra finds your district, tahsil and village from your GPS on its own. You can also pick a village by hand.</p>
+        </article>
+        <article class="step reveal">
+          <div class="step__art">
+            <svg viewBox="0 0 320 250" aria-hidden="true">
+              <rect x="20" y="20" width="280" height="210" rx="18" fill="#3f5a2a"/>
+              <path d="M20 90 L300 60M20 170 L300 150M110 20 L130 230M210 20 L220 230" stroke="#ffe100" stroke-width="2" fill="none"/>
+              <path d="M113 83 L212 70 L218 153 L122 166Z" fill="rgba(118,0,255,.45)" stroke="#b77bff" stroke-width="3.5" stroke-linejoin="round"/>
+              <path d="M166 90c-9 0-16 7-16 16 0 12 16 26 16 26s16-14 16-26c0-9-7-16-16-16z" fill="#e8132b" stroke="#fff" stroke-width="2"/>
+              <circle cx="166" cy="106" r="5.5" fill="#fff"/>
+              <g transform="translate(186 128)"><path d="M10 0c3 0 5 2 5 5v14l6-2c2-.5 4 1 4 3l-1 12c-.3 4-3 7-7 7H9c-3 0-5-1.5-6.5-4L-3 25c-1-2 0-4 2-4.5 1.5-.3 3 .3 4 1.5l2 3V5c0-3 2-5 5-5z" fill="#fff" stroke="#111418" stroke-width="2" stroke-linejoin="round"/></g>
+            </svg>
+          </div>
+          <span class="step__num">2</span>
+          <h3>Tap your plot</h3>
+          <p>Official cadastral boundaries are drawn over satellite imagery. You can see exactly where your land starts and ends.</p>
+        </article>
+        <article class="step reveal">
+          <div class="step__art">
+            <svg viewBox="0 0 320 250" aria-hidden="true">
+              <rect x="78" y="26" width="164" height="200" rx="18" fill="#fff" stroke="#e5e7eb" stroke-width="2"/>
+              <rect x="96" y="46" width="70" height="10" rx="5" fill="#111418"/>
+              <rect x="96" y="64" width="110" height="7" rx="3.5" fill="#c9cdd4"/>
+              <rect x="96" y="90" width="60" height="36" rx="9" fill="#f4ecff"/><rect x="164" y="90" width="60" height="36" rx="9" fill="#f4ecff"/>
+              <rect x="96" y="134" width="60" height="36" rx="9" fill="#fff8cc"/><rect x="164" y="134" width="60" height="36" rx="9" fill="#e9f9ee"/>
+              <rect x="96" y="186" width="128" height="24" rx="12" fill="#7600ff"/>
+              <circle cx="236" cy="42" r="24" fill="#16a34a"/>
+              <path d="M225 42l7 7 14-14" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="step__num">3</span>
+          <h3>See the official record</h3>
+          <p>You get the owner, Khata, area and land type from the Record of Rights, plus the government value and the cost to register.</p>
+        </article>
+      </div>
+      <div class="time reveal">
+        <span><svg><use href="#i-check"/></svg>What took weeks of paperwork now takes under a minute.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="section features" id="features">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="kicker">Everything in one app</p>
+        <h2>Everything about a plot, on one screen.</h2>
+        <p>Use it before you buy, sell, inherit or just to put your mind at ease.</p>
+      </div>
+      <div class="bento">
+        <article class="tile tile--hero reveal">
+          <div class="tile__ico" style="background:rgba(255,255,255,.14);color:#ffe100"><svg><use href="#i-pin"/></svg></div>
+          <h3>Plot boundaries on a live map</h3>
+          <p>Every plot in the village is outlined on satellite imagery. Tap any one to see its details.</p>
+          <div class="tile__meta"><span class="chip">GPS locate</span><span class="chip">Satellite view</span><span class="chip">Village search</span></div>
+        </article>
+        <article class="tile tile--wide reveal">
+          <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 14l2 2 4-4"/></svg></div>
+          <h3>Official Record of Rights (RoR)</h3>
+          <p>Owner names, Khata number, area, Kisam and remarks, taken from Odisha Bhulekh and shown in plain language.</p>
+          <div class="tile__meta"><span class="chip">Owner</span><span class="chip">Khata</span><span class="chip">Area</span><span class="chip">Kisam</span></div>
+        </article>
+        <article class="tile reveal">
+          <div class="tile__ico" style="background:#fff8cc;color:#8a6d00"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12M6 9h12M13 20 6 13h3a4 4 0 0 0 0-8"/></svg></div>
+          <h3>Government land value</h3>
+          <p>The official benchmark rate for the plot, so you can check a price before you negotiate.</p>
+        </article>
+        <article class="tile reveal">
+          <div class="tile__ico" style="background:#e9f9ee;color:#16a34a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M14 11h2M8 15h2M14 15h2"/></svg></div>
+          <h3>Registration cost</h3>
+          <p>Stamp duty and registration fees are estimated up front, so the final bill holds no surprises.</p>
+        </article>
+        <article class="tile reveal">
+          <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 20V9"/></svg></div>
+          <h3>Full land report</h3>
+          <p>A clean, shareable report with the map, the record and the valuation together.</p>
+        </article>
+        <article class="tile reveal">
+          <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+          <h3>Save &amp; share lands</h3>
+          <p>Keep a list of your plots and send the details to family or your lawyer in one tap.</p>
+        </article>
+        <article class="tile reveal">
+          <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14M9 4v4M7 8c0 5 4 9 9 10M17 8c-1 4-4 7-9 9M13 20l4-9 4 9M14.5 17h5"/></svg></div>
+          <h3>Speaks your language</h3>
+          <div class="lang">ଭୂମିତ୍ର <span>Bhumitra</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRUST ===== -->
+  <section class="section trust" aria-labelledby="trust-h">
+    <div class="trust__bg" role="img" aria-label="Aerial view of the Puri coastline and farmland in Odisha"></div>
+    <div class="container">
+      <p class="kicker reveal">Built for Odisha</p>
+      <h2 id="trust-h" class="reveal">Built on official data. Designed so anyone can use it.</h2>
+      <p class="trust__lead reveal">Bhumitra reads from the same government land records that officials use, and shows them clearly. It never guesses.</p>
+      <div class="pillars">
+        <div class="pillar reveal"><svg><use href="#i-shield"/></svg><b>Official sources</b><span>Records come from Odisha Bhulekh and the state's cadastral maps.</span></div>
+        <div class="pillar reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>Private by design</b><span>Your saved lands and your location stay yours. We don't sell your data.</span></div>
+        <div class="pillar reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><b>Always current</b><span>Records are fetched live, so what you see matches the government's copy.</span></div>
+        <div class="pillar reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><b>Real support</b><span>A real person replies at support@bhumitra.in.</span></div>
+      </div>
+      <div class="stats reveal">
+        <div class="stat"><b>30</b><span>districts of Odisha</span></div>
+        <div class="stat"><b>3 taps</b><span>from field to record</span></div>
+        <div class="stat"><b>2</b><span>languages: ଓଡ଼ିଆ &amp; English</span></div>
+        <div class="stat"><b>₹0</b><span>to download</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
+  <section class="cta" id="download">
+    <div class="container">
+      <div class="cta__card reveal">
+        <div>
+          <img class="cta__icon" src="assets/img/app-icon.webp" alt="Bhumitra app icon" width="84" height="84" loading="lazy">
+          <h2>Know your land.<br>Download Bhumitra.</h2>
+          <p>Get the app for free and see what's really on record for your plot today.</p>
+          <div class="stores stores--light">
+            <a class="store js-ios" href="https://apps.apple.com/in/app/bhumitra/id6760656162" target="_blank" rel="noopener">
+              <svg aria-hidden="true"><use href="#i-apple"/></svg>
+              <span><small>Download on the</small><strong>App Store</strong></span>
+            </a>
+            <a class="store js-android" href="#download">
+              <svg aria-hidden="true"><use href="#i-play"/></svg>
+              <span><small>Get it on</small><strong>Google Play</strong></span>
+            </a>
+          </div>
+        </div>
+        <div class="qr">
+          <img src="assets/img/qr-appstore.svg" alt="QR code linking to Bhumitra on the App Store" width="168" height="168" loading="lazy">
+          <b>Scan to download</b>
+          <span>Point your iPhone camera here</span>
+        </div>
+      </div>
+    </div>
+    <div class="cta__land" aria-hidden="true"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot">
+      <div class="foot__by">
+        <span>A product by</span>
+        <img src="assets/img/prettyplot.png" alt="PrettyPlot" width="68" height="26" loading="lazy">
+      </div>
+      <nav aria-label="Footer">
+        <a href="mailto:support@bhumitra.in">support@bhumitra.in</a>
+        <a href="https://apps.apple.com/in/app/bhumitra/id6760656162" target="_blank" rel="noopener">App Store</a>
+        <span>© <span id="yr">2026</span> PrettyPlot</span>
+      </nav>
+    </div>
+    <p class="disclaimer">Bhumitra is an independent app and not affiliated with the Government of Odisha. Land records are sourced from official public portals such as Odisha Bhulekh. Plot boundaries come from available cadastral map data and are for reference only. For legal purposes, always check with the concerned revenue office.</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="main.js" defer></script>
+</body>
+</html>
