@@ -4,7 +4,7 @@
     iosUrl: "https://apps.apple.com/in/app/bhumitra/id6760656162",
     // Set this to the Play Store URL once the Android app is live; the "Coming soon" state then turns off automatically.
     androidUrl: "",
-    supportEmail: "support@bhumitra.in",
+    supportEmail: "support@getbhumitra.in",
   };
 
   const ua = navigator.userAgent || "";
