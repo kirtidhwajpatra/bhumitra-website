@@ -1,0 +1,13 @@
+{
+  "name": "Bhumitra: Odisha land records",
+  "short_name": "Bhumitra",
+  "description": "Official plot maps and Record of Rights for any plot in Odisha.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#079963",
+  "icons": [
+    { "src": "/assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/img/bhumitra-app-icon.png", "sizes": "892x892", "type": "image/png" }
+  ]
+}

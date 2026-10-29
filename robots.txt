@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /tools/
+Disallow: /content/
+Disallow: /bhumitra-standalone.html
+
+Sitemap: https://getbhumitra.in/sitemap.xml

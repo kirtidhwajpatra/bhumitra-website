@@ -1,21 +1,83 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Bhumitra: Find any plot in Odisha, with its official land record</title>
-  <meta name="description" content="Bhumitra shows official plot boundaries, Record of Rights (RoR), government land value and registration cost for any plot in Odisha. Free to download on iPhone.">
+  <title>Bhumitra: Odisha land records &amp; plot map (Bhulekh RoR)</title>
+  <meta name="description" content="Find any plot in Odisha on a satellite map and open its official Record of Rights (RoR) from Bhulekh: owners, khata, area and kisam, plus government land value and registration cost. Free on iPhone.">
+  <link rel="canonical" href="https://getbhumitra.in/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#079963">
-  <meta property="og:title" content="Bhumitra: Your land, one tap away">
-  <meta property="og:description" content="See any plot's boundary, owner record and government value on your phone with Bhumitra.">
-  <meta property="og:image" content="assets/img/bhumitra-app-icon.png">
+  <meta property="og:site_name" content="Bhumitra">
+  <meta property="og:locale" content="en_IN">
   <meta property="og:type" content="website">
-  <link rel="icon" type="image/png" sizes="892x892" href="assets/img/bhumitra-app-icon.png">
-  <link rel="apple-touch-icon" href="assets/img/bhumitra-app-icon.png">
+  <meta property="og:url" content="https://getbhumitra.in/">
+  <meta property="og:title" content="Bhumitra: Your land, one tap away">
+  <meta property="og:description" content="Official plot maps and Record of Rights for any plot in Odisha, on your phone.">
+  <meta property="og:image" content="https://getbhumitra.in/assets/img/og/home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Bhumitra app showing the land details for a plot in Keonjhar">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bhumitra: Your land, one tap away">
+  <meta name="twitter:description" content="Official plot maps and Record of Rights for any plot in Odisha, on your phone.">
+  <meta name="twitter:image" content="https://getbhumitra.in/assets/img/og/home.jpg">
   <meta name="apple-itunes-app" content="app-id=6760656162">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="alternate" type="application/rss+xml" title="Bhumitra guides" href="blog/feed.xml">
   <link rel="preload" href="assets/fonts/GoogleSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/GoogleSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://getbhumitra.in/#org",
+        "name": "Bhumitra",
+        "url": "https://getbhumitra.in/",
+        "logo": "https://getbhumitra.in/assets/img/icon-192.png",
+        "email": "support@getbhumitra.in",
+        "sameAs": ["https://apps.apple.com/in/app/bhumitra/id6760656162"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://getbhumitra.in/#website",
+        "name": "Bhumitra",
+        "url": "https://getbhumitra.in/",
+        "inLanguage": "en-IN",
+        "publisher": { "@id": "https://getbhumitra.in/#org" }
+      },
+      {
+        "@type": "MobileApplication",
+        "name": "Bhumitra",
+        "operatingSystem": "iOS",
+        "applicationCategory": "ReferenceApplication",
+        "description": "Find any plot in Odisha on a satellite map with official plot boundaries and open its Record of Rights (RoR) from Bhulekh, with government land value and registration cost estimates.",
+        "url": "https://getbhumitra.in/",
+        "downloadUrl": "https://apps.apple.com/in/app/bhumitra/id6760656162",
+        "image": "https://getbhumitra.in/assets/img/og/home.jpg",
+        "areaServed": { "@type": "State", "name": "Odisha" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+        "publisher": { "@id": "https://getbhumitra.in/#org" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          { "@type": "Question", "name": "Where does Bhumitra get its land records?", "acceptedAnswer": { "@type": "Answer", "text": "Records of Rights come from the Government of Odisha's public Bhulekh portal (bhulekh.ori.nic.in). Plot boundaries come from the state's cadastral maps. Bhumitra is an independent app and is not affiliated with the Government of Odisha." } },
+          { "@type": "Question", "name": "Do I need a khata or plot number?", "acceptedAnswer": { "@type": "Answer", "text": "No. Choose a village or tap locate, and the plot boundaries appear on a satellite map. Tap the plot to open its record. If you do have a number, you can also search by plot number, khata number or plot unique ID." } },
+          { "@type": "Question", "name": "Is Bhumitra free?", "acceptedAnswer": { "@type": "Answer", "text": "The app is free to download and your first searches are free. After that you can buy a one-time search pack, whose credits never expire, or subscribe to Monthly Unlimited. A plot you have already opened stays open with no second charge." } },
+          { "@type": "Question", "name": "Can I use a Bhumitra record for legal purposes?", "acceptedAnswer": { "@type": "Answer", "text": "No. Bhumitra shows records for information only. For a sale, loan or court matter, get a certified copy of the Record of Rights from your Tahasil office." } },
+          { "@type": "Question", "name": "Which districts are covered?", "acceptedAnswer": { "@type": "Answer", "text": "Bhumitra covers all 30 districts of Odisha. Plot maps are available wherever the state has published cadastral map data for the village." } },
+          { "@type": "Question", "name": "Is Bhumitra available on Android?", "acceptedAnswer": { "@type": "Answer", "text": "Bhumitra is on the App Store for iPhone now. The Android app is coming soon to Google Play." } }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -37,9 +99,10 @@
       Bhumitra
     </a>
     <nav class="nav__links" aria-label="Primary">
-      <a href="#problem">Why Bhumitra</a>
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="/blog/">Guides</a>
       <a class="btn btn--brand js-smart-download" href="#download">Get the app</a>
     </nav>
   </div>
@@ -50,9 +113,9 @@
   <section class="hero" id="top">
     <div class="container hero__grid">
       <div class="reveal">
-        <span class="eyebrow"><span class="dot"><svg><use href="#i-pin"/></svg></span>Now covering all 30 districts of Odisha</span>
+        <span class="eyebrow"><span class="dot"><svg><use href="#i-pin"/></svg></span>Covering all 30 districts of Odisha</span>
         <h1>Your land,<br><span class="mark">one tap</span> <span class="brand-text">away.</span></h1>
-        <p class="lead">Stand on any plot and Bhumitra shows its exact boundary, its official owner record and its government value, right on your phone. You don't need a Khata number, an office visit or a broker.</p>
+        <p class="lead">Find any plot in Odisha on a satellite map and open its official Record of Rights: owners, khata, area and land type. You don't need a khata number, an office visit or a broker.</p>
         <div class="stores">
           <a class="store js-ios" href="https://apps.apple.com/in/app/bhumitra/id6760656162" target="_blank" rel="noopener">
             <svg aria-hidden="true"><use href="#i-apple"/></svg>
@@ -64,26 +127,26 @@
           </a>
         </div>
         <div class="hero__trust">
-          <span><svg><use href="#i-check"/></svg>Official Bhulekh records</span>
+          <span><svg><use href="#i-check"/></svg>Records from Odisha Bhulekh</span>
           <span><svg><use href="#i-check"/></svg>Free to download</span>
-          <span><svg><use href="#i-check"/></svg>English &amp; ଓଡ଼ିଆ</span>
+          <span><svg><use href="#i-check"/></svg>First searches free</span>
         </div>
       </div>
 
       <div class="phone-wrap reveal">
         <div class="float float--a">
           <span class="float__ico" style="background:#dff9ec;color:#057a51"><svg><use href="#i-pin"/></svg></span>
-          <span><b>Plot found</b><small>in 4 seconds</small></span>
+          <span><b>Plot found</b><small>from where you stand</small></span>
         </div>
         <div class="float float--b">
           <span class="float__ico" style="background:#e7f9ee;color:#079963"><svg><use href="#i-shield"/></svg></span>
-          <span><b>RoR verified</b><small>Odisha Bhulekh</small></span>
+          <span><b>Record of Rights</b><small>from Odisha Bhulekh</small></span>
         </div>
 
-        <div class="app-preview" role="img" aria-label="Bhumitra app preview showing a verified plot record">
+        <div class="app-preview" role="img" aria-label="Bhumitra app preview showing an Odisha plot record">
           <div class="app-preview__top"><img src="assets/img/bhumitra-app-icon.png" alt=""><span>Bhumitra</span><b>•••</b></div>
           <div class="app-preview__map"><span class="app-preview__tag">ODISHA LAND RECORD</span><strong>Find any plot,<br>where you stand.</strong><i><svg><use href="#i-pin"/></svg></i></div>
-          <div class="app-preview__record"><span>Official plot record</span><b>Verified</b><p>Khata · Owner · Area · Kisam</p><div><em></em><em></em><em></em></div></div>
+          <div class="app-preview__record"><span>Official plot record</span><b>Bhulekh</b><p>Khata · Owner · Area · Kisam</p><div><em></em><em></em><em></em></div></div>
         </div>
       </div>
     </div>
@@ -102,12 +165,12 @@
         <article class="pain reveal">
           <div class="pain__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg></div>
           <h3>Rounds of office visits</h3>
-          <p>Tahsil and RI office trips, long queues and lost workdays, only to find out who a plot belongs to.</p>
+          <p>Tahasil and RI office trips, long queues and lost workdays, only to find out who a plot belongs to.</p>
         </article>
         <article class="pain reveal">
           <div class="pain__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div>
           <h3>Numbers nobody remembers</h3>
-          <p>Government portals ask for Khata and plot numbers first. Most people only know where the land is.</p>
+          <p>Government portals ask for khata and plot numbers first. Most people only know where the land is.</p>
         </article>
         <article class="pain reveal">
           <div class="pain__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg></div>
@@ -117,7 +180,7 @@
       </div>
       <div class="pivot reveal">
         <img src="assets/img/bhumitra-app-icon.png" alt="" width="60" height="60" loading="lazy">
-        <p>Bhumitra works from <span>where you're standing</span>. Tap once and the official record for that plot opens on your phone.</p>
+        <p>Bhumitra starts from <span>where the land is</span>, not from a number. Tap the plot and its official record opens on your phone.</p>
       </div>
     </div>
   </section>
@@ -145,8 +208,8 @@
             </svg>
           </div>
           <span class="step__num">1</span>
-          <h3>Tap "locate"</h3>
-          <p>Bhumitra finds your district, tahsil and village from your GPS on its own. You can also pick a village by hand.</p>
+          <h3>Find your village</h3>
+          <p>Tap locate and Bhumitra works out your district, tahasil and village from GPS. Or search the village by name.</p>
         </article>
         <article class="step reveal">
           <div class="step__art">
@@ -161,7 +224,7 @@
           </div>
           <span class="step__num">2</span>
           <h3>Tap your plot</h3>
-          <p>Official cadastral boundaries are drawn over satellite imagery. You can see exactly where your land starts and ends.</p>
+          <p>Official cadastral plot lines are drawn over satellite imagery, so you can see where your land starts and ends.</p>
         </article>
         <article class="step reveal">
           <div class="step__art">
@@ -177,12 +240,12 @@
             </svg>
           </div>
           <span class="step__num">3</span>
-          <h3>See the official record</h3>
-          <p>You get the owner, Khata, area and land type from the Record of Rights, plus the government value and the cost to register.</p>
+          <h3>Open the land record</h3>
+          <p>See owners and their shares, khata, area and kisam from the Record of Rights, plus the government value and the cost to register.</p>
         </article>
       </div>
       <div class="time reveal">
-        <span><svg><use href="#i-check"/></svg>What took weeks of paperwork now takes under a minute.</span>
+        <span><svg><use href="#i-check"/></svg>What took office visits and paperwork now takes under a minute.</span>
       </div>
     </div>
   </section>
@@ -193,7 +256,7 @@
       <div class="section__head reveal">
         <p class="kicker">Everything in one app</p>
         <h2>Everything about a plot, on one screen.</h2>
-        <p>Use it before you buy, sell, inherit or just to put your mind at ease.</p>
+        <p>Use it before you buy, sell or inherit land, or just to check what's on record.</p>
       </div>
       <div class="bento">
         <article class="tile tile--hero reveal">
@@ -206,33 +269,86 @@
           <img class="ios-record-art" src="assets/img/bhumitra-ios-land-record.png" alt="" aria-hidden="true" loading="lazy">
           <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 14l2 2 4-4"/></svg></div>
           <h3>Official Record of Rights (RoR)</h3>
-          <p>Owner names, Khata number, area, Kisam and remarks, taken from Odisha Bhulekh and shown in plain language.</p>
-          <div class="tile__meta"><span class="chip">Owner</span><span class="chip">Khata</span><span class="chip">Area</span><span class="chip">Kisam</span></div>
+          <p>Owners and their shares, khata number, area, kisam and remarks, taken from Odisha Bhulekh and laid out clearly.</p>
+          <div class="tile__meta"><span class="chip">Owners</span><span class="chip">Khata</span><span class="chip">Area</span><span class="chip">Kisam</span></div>
         </article>
         <article class="tile reveal">
           <div class="tile__ico" style="background:#dff9ec;color:#057a51"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12M6 9h12M13 20 6 13h3a4 4 0 0 0 0-8"/></svg></div>
           <h3>Government land value</h3>
-          <p>The official benchmark rate for the plot, so you can check a price before you negotiate.</p>
+          <p>The official IGR benchmark rate for the plot, so you can check a price before you negotiate.</p>
         </article>
         <article class="tile reveal">
           <div class="tile__ico" style="background:#e7f9ee;color:#079963"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M14 11h2M8 15h2M14 15h2"/></svg></div>
           <h3>Registration cost</h3>
-          <p>Stamp duty and registration fees are estimated up front, so the final bill holds no surprises.</p>
+          <p>Enter the deal price and see estimated stamp duty and registration fee before you go to the office.</p>
         </article>
         <article class="tile reveal">
           <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 20V9"/></svg></div>
           <h3>Full land report</h3>
-          <p>A clean, shareable report with the map, the record and the valuation together.</p>
+          <p>Location, ownership, other plots in the khata, value and costs, together in one report.</p>
+        </article>
+        <article class="tile reveal">
+          <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div>
+          <h3>Sales history</h3>
+          <p>Registered sales for the plot where they're available online, with dates and deed details.</p>
+        </article>
+        <article class="tile reveal">
+          <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div>
+          <h3>Search by number</h3>
+          <p>Already have the papers? Search by plot number, khata number or plot unique ID.</p>
         </article>
         <article class="tile reveal">
           <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
           <h3>Save &amp; share lands</h3>
-          <p>Keep a list of your plots and send the details to family or your lawyer in one tap.</p>
+          <p>Keep a list of your plots on your phone and send a record to family or your lawyer.</p>
         </article>
         <article class="tile reveal">
-          <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14M9 4v4M7 8c0 5 4 9 9 10M17 8c-1 4-4 7-9 9M13 20l4-9 4 9M14.5 17h5"/></svg></div>
-          <h3>Speaks your language</h3>
-          <div class="lang">ଭୂମିତ୍ର <span>Bhumitra</span></div>
+          <div class="tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3 8.7 2.7a1 1 0 0 0-1.4 0L2.7 7.3a1 1 0 0 0 0 1.4l12.6 12.6a1 1 0 0 0 1.4 0l4.6-4.6a1 1 0 0 0 0-1.4zM7.5 10.5l2-2M10.5 13.5l2-2M13.5 16.5l2-2"/></svg></div>
+          <h3>Land area converter</h3>
+          <p>Decimal, acre, sq ft, guntha, mana, bigha, katha and more, using Odisha's values.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING ===== -->
+  <section class="section pricing" id="pricing">
+    <div class="container">
+      <div class="section__head center reveal">
+        <p class="kicker">Pricing</p>
+        <h2>Start free. Pay only for what you search.</h2>
+        <p>No subscription needed. Prices are shown in the app before you pay, and payment goes through Apple.</p>
+      </div>
+      <div class="plans">
+        <article class="plan reveal">
+          <span class="plan__tag">Starter</span>
+          <h3>Free</h3>
+          <p class="plan__sub">To get you started</p>
+          <ul>
+            <li><svg><use href="#i-check"/></svg>Your first plot searches are free</li>
+            <li><svg><use href="#i-check"/></svg>Full plot map for every village</li>
+            <li><svg><use href="#i-check"/></svg>Land area converter</li>
+          </ul>
+        </article>
+        <article class="plan reveal">
+          <span class="plan__tag">Pay as you go</span>
+          <h3>Search packs</h3>
+          <p class="plan__sub">10, 50 or 200 searches</p>
+          <ul>
+            <li><svg><use href="#i-check"/></svg>One-time payment, no subscription</li>
+            <li><svg><use href="#i-check"/></svg>Unused searches never expire</li>
+            <li><svg><use href="#i-check"/></svg>A plot you've opened stays open, no second charge</li>
+          </ul>
+        </article>
+        <article class="plan plan--best reveal">
+          <span class="plan__tag">Best value</span>
+          <h3>Unlimited</h3>
+          <p class="plan__sub">Every plot. Every day.</p>
+          <ul>
+            <li><svg><use href="#i-check"/></svg>Unlimited plot searches</li>
+            <li><svg><use href="#i-check"/></svg>For agents, advocates and surveyors</li>
+            <li><svg><use href="#i-check"/></svg>Renews monthly, cancel any time in Apple settings</li>
+          </ul>
         </article>
       </div>
     </div>
@@ -244,18 +360,67 @@
     <div class="container">
       <p class="kicker reveal">Built for Odisha</p>
       <h2 id="trust-h" class="reveal">Built on official data. Designed so anyone can use it.</h2>
-      <p class="trust__lead reveal">Bhumitra reads from the same government land records that officials use, and shows them clearly. It never guesses.</p>
+      <p class="trust__lead reveal">Bhumitra reads the public land records the state publishes and lays them out clearly. When something isn't available, it tells you instead of guessing.</p>
       <div class="pillars">
-        <div class="pillar reveal"><svg><use href="#i-shield"/></svg><b>Official sources</b><span>Records come from Odisha Bhulekh and the state's cadastral maps.</span></div>
-        <div class="pillar reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>Private by design</b><span>Your saved lands and your location stay yours. We don't sell your data.</span></div>
-        <div class="pillar reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><b>Always current</b><span>Records are fetched live, so what you see matches the government's copy.</span></div>
-        <div class="pillar reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><b>Real support</b><span>A real person replies at support@getbhumitra.in.</span></div>
+        <div class="pillar reveal"><svg><use href="#i-shield"/></svg><b>Official sources</b><span>Records come from the public Bhulekh portal and the state's cadastral maps. Land values come from Odisha IGR.</span></div>
+        <div class="pillar reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg><b>No made-up numbers</b><span>If a rate or record can't be confirmed, Bhumitra says so and marks it clearly.</span></div>
+        <div class="pillar reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>Private by design</b><span>Saved lands stay on your phone. We don't sell your personal data.</span></div>
+        <div class="pillar reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><b>Real support</b><span>Write to support@getbhumitra.in. We usually reply within 24 hours.</span></div>
       </div>
       <div class="stats reveal">
         <div class="stat"><b>30</b><span>districts of Odisha</span></div>
         <div class="stat"><b>3 taps</b><span>from field to record</span></div>
-        <div class="stat"><b>2</b><span>languages: ଓଡ଼ିଆ &amp; English</span></div>
+        <div class="stat"><b>11</b><span>land units in the converter</span></div>
         <div class="stat"><b>₹0</b><span>to download</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section" id="faq">
+    <div class="container faq-wrap">
+      <div class="section__head reveal">
+        <p class="kicker">Questions</p>
+        <h2>Good to know.</h2>
+        <p>Can't find your answer? Visit <a href="/support/">Help &amp; support</a>.</p>
+      </div>
+      <div class="faq reveal">
+        <details class="faq__item"><summary>Where does Bhumitra get its land records?</summary><p>Records of Rights come from the Government of Odisha's public Bhulekh portal (bhulekh.ori.nic.in). Plot boundaries come from the state's cadastral maps, and land values from Odisha IGR. Bhumitra is an independent app and is not affiliated with the Government of Odisha.</p></details>
+        <details class="faq__item"><summary>Do I need a khata or plot number?</summary><p>No. Choose a village or tap locate, and the plot boundaries appear on a satellite map. Tap the plot to open its record. If you do have a number, you can also search by plot number, khata number or plot unique ID.</p></details>
+        <details class="faq__item"><summary>Is Bhumitra free?</summary><p>The app is free to download and your first searches are free. After that you can buy a one-time search pack, whose credits never expire, or subscribe to Monthly Unlimited. A plot you've already opened stays open with no second charge.</p></details>
+        <details class="faq__item"><summary>Can I use a Bhumitra record for legal purposes?</summary><p>No. Bhumitra shows records for information only. For a sale, loan or court matter, get a certified copy of the Record of Rights from your Tahasil office.</p></details>
+        <details class="faq__item"><summary>Which districts are covered?</summary><p>All 30 districts of Odisha. Plot maps are available wherever the state has published cadastral map data for the village.</p></details>
+        <details class="faq__item"><summary>Is Bhumitra available on Android?</summary><p>Bhumitra is on the App Store for iPhone now. The Android app is coming soon to Google Play.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GUIDES ===== -->
+  <section class="section guides" id="guides" aria-labelledby="guides-h">
+    <div class="container">
+      <div class="section__head guides__head reveal">
+        <div>
+          <p class="kicker">Guides</p>
+          <h2 id="guides-h">Understand your land.</h2>
+          <p>Plain-language guides to Odisha land records, units and costs.</p>
+        </div>
+        <a class="btn btn--ghost" href="/blog/">All guides</a>
+      </div>
+      <div class="post-grid">
+<!-- BLOG-CARDS:START -->
+<a class="post-card" href="/blog/how-to-check-land-records-odisha-online/">
+  <img src="assets/img/blog/how-to-check-land-records-odisha-online.webp" alt="" width="600" height="315" loading="lazy">
+  <div><span class="post-card__cat">Getting started</span><h3>How to check land records in Odisha online (Bhulekh RoR guide)</h3><p>A step-by-step guide to finding the Record of Rights for any plot in Odisha: by khata number, plot number or owner name on Bhulekh, or straight from the map when you don&#x27;t know the numbers.</p><span class="post-card__meta">3 min read</span></div>
+</a>
+<a class="post-card" href="/blog/record-of-rights-odisha-explained/">
+  <img src="assets/img/blog/record-of-rights-odisha-explained.webp" alt="" width="600" height="315" loading="lazy">
+  <div><span class="post-card__cat">Land records</span><h3>Record of Rights (RoR) in Odisha: what every field means</h3><p>Khata, plot number, kisam, area in acres and decimals, owner shares and remarks. A field-by-field explanation of the Odisha RoR so you can read your land record with confidence.</p><span class="post-card__meta">3 min read</span></div>
+</a>
+<a class="post-card" href="/blog/find-plot-number-khata-number-odisha/">
+  <img src="assets/img/blog/find-plot-number-khata-number-odisha.webp" alt="" width="600" height="315" loading="lazy">
+  <div><span class="post-card__cat">Getting started</span><h3>How to find your plot number and khata number in Odisha</h3><p>Lost the papers or never had them? Five practical ways to find the plot and khata number of land in Odisha, including finding it on a map from where you stand.</p><span class="post-card__meta">2 min read</span></div>
+</a>
+<!-- BLOG-CARDS:END -->
       </div>
     </div>
   </section>
@@ -267,7 +432,7 @@
         <div>
           <img class="cta__icon" src="assets/img/bhumitra-app-icon.png" alt="Bhumitra app icon" width="84" height="84" loading="lazy">
           <h2>Know your land.<br>Download Bhumitra.</h2>
-          <p>Get the app for free and see what's really on record for your plot today.</p>
+          <p>Get the app for free and see what's on record for your plot today.</p>
           <div class="stores stores--light">
             <a class="store js-ios" href="https://apps.apple.com/in/app/bhumitra/id6760656162" target="_blank" rel="noopener">
               <svg aria-hidden="true"><use href="#i-apple"/></svg>
@@ -298,6 +463,7 @@
         <span>Bhumitra</span>
       </div>
       <nav aria-label="Footer">
+        <a href="/blog/">Guides</a>
         <a href="/support/">Support</a>
         <a href="/privacy/">Privacy</a>
         <a href="/terms/">Terms</a>
@@ -306,7 +472,7 @@
         <span>© <span id="yr">2026</span> Bhumitra</span>
       </nav>
     </div>
-    <p class="disclaimer">Bhumitra is an independent app and not affiliated with the Government of Odisha. Land records are sourced from official public portals such as Odisha Bhulekh. Plot boundaries come from available cadastral map data and are for reference only. For legal purposes, always check with the concerned revenue office.</p>
+    <p class="disclaimer">Bhumitra is an independent app and not affiliated with the Government of Odisha. Land records are sourced from official public portals such as Odisha Bhulekh. Plot boundaries come from available cadastral map data and are for reference only. Records are for information only and are not certified copies. For legal purposes, always check with the concerned revenue office.</p>
   </div>
 </footer>
 
