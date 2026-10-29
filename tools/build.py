@@ -53,8 +53,45 @@ def load_posts() -> list[dict]:
         meta.setdefault("updated", meta["date"])
         meta["url"] = f"/blog/{meta['slug']}/"
         posts.append(meta)
-    posts.sort(key=lambda p: (p["date"], -p.get("order", 0)), reverse=True)
+    # Newest first; within a day, higher "order" first.
+    posts.sort(key=lambda p: (p["date"], p.get("order", 0)), reverse=True)
     return posts
+
+
+def slugify(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", re.sub(r"<[^>]+>", "", text).lower()).strip("-")
+
+
+def add_toc(body: str) -> tuple[str, str]:
+    """Give every <h2> an id and return (body, table-of-contents HTML)."""
+    entries = []
+
+    def repl(m: re.Match) -> str:
+        attrs, inner = m.group(1), m.group(2)
+        hid = re.search(r'id="([^"]+)"', attrs)
+        hid = hid.group(1) if hid else slugify(inner)
+        entries.append((hid, re.sub(r"<[^>]+>", "", inner)))
+        attrs = attrs if 'id="' in attrs else f'{attrs} id="{hid}"'
+        return f"<h2{attrs}>{inner}</h2>"
+
+    body = re.sub(r"<h2([^>]*)>(.*?)</h2>", repl, body, flags=re.S)
+    if len(entries) < 4:
+        return body, ""
+    items = "".join(f'<li><a href="#{i}">{esc(t)}</a></li>' for i, t in entries)
+    return body, f'<nav class="toc" aria-label="On this page"><b>On this page</b><ol>{items}</ol></nav>'
+
+
+def related_posts(p: dict, posts: list[dict], n: int = 3) -> list[dict]:
+    wanted = p.get("related", [])
+    by_slug = {x["slug"]: x for x in posts}
+    picked = [by_slug[s] for s in wanted if s in by_slug and s != p["slug"]]
+    tags = set(t.lower() for t in p.get("tags", []))
+    rest = sorted(
+        (x for x in posts if x["slug"] != p["slug"] and x not in picked),
+        key=lambda x: (len(tags & set(t.lower() for t in x.get("tags", []))) + (2 if x["category"] == p["category"] else 0)),
+        reverse=True,
+    )
+    return (picked + rest)[:n]
 
 
 def nice_date(iso: str) -> str:
@@ -185,7 +222,8 @@ def render_post(p: dict, posts: list[dict]) -> str:
                 for q, a in p["faq"]
             ],
         })
-    related = [x for x in posts if x["slug"] != p["slug"]][:3]
+    related = related_posts(p, posts)
+    body, toc = add_toc(p["body"])
     faq_html = ""
     if p.get("faq"):
         items = "\n".join(
@@ -209,7 +247,8 @@ def render_post(p: dict, posts: list[dict]) -> str:
       </header>
       <figure class="post__cover container"><img src="../../assets/img/blog/{p['slug']}.webp" alt="{esc(p['coverAlt'])}" width="1200" height="630" fetchpriority="high"></figure>
       <div class="prose">
-{p['body']}
+{toc}
+{body}
 {faq_html}
 {cta()}
       </div>
@@ -243,6 +282,15 @@ def render_index(posts: list[dict]) -> str:
         breadcrumb_ld([("Home", "/"), ("Guides", "/blog/")]),
     ]
     first, rest = posts[0], posts[1:]
+    cats: dict[str, list[dict]] = {}
+    for p in rest:
+        cats.setdefault(p["category"], []).append(p)
+    chips = "".join(f'<a class="chip" href="#{slugify(c)}">{esc(c)}</a>' for c in cats)
+    sections = "\n".join(
+        f'<section class="blog-cat" id="{slugify(c)}" aria-labelledby="{slugify(c)}-h"><h2 id="{slugify(c)}-h">{esc(c)}</h2>'
+        f'<div class="post-grid">\n{chr(10).join(card(p, "../") for p in ps)}\n</div></section>'
+        for c, ps in cats.items()
+    )
     return f"""{head(title='Odisha land record guides | Bhumitra', description=desc, path='/blog/', image='/assets/img/og/home.jpg', og_type='website', jsonld=ld, depth=1)}
 {header(1)}
   <main id="main">
@@ -252,9 +300,8 @@ def render_index(posts: list[dict]) -> str:
         <img src="../assets/img/blog/{first['slug']}.webp" alt="" width="1200" height="630">
         <div><span class="post-card__cat">{esc(first['category'])}</span><h2>{esc(first['title'])}</h2><p>{esc(first['description'])}</p><span class="post-card__meta">{first['minutes']} min read</span></div>
       </a>
-      <div class="post-grid">
-{chr(10).join(card(p, '../') for p in rest)}
-      </div>
+      <nav class="blog-cats" aria-label="Topics">{chips}</nav>
+{sections}
     </div>
   </main>
 {footer(1)}"""
