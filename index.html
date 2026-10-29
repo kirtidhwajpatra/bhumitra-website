@@ -92,7 +92,7 @@
   <symbol id="i-locate" viewBox="0 0 24 24"><path fill="currentColor" d="M21.7 2.3a1 1 0 0 0-1.07-.22l-18 7a1 1 0 0 0 .1 1.9l7.6 1.9 1.9 7.6a1 1 0 0 0 1.9.1l7-18a1 1 0 0 0-.23-1.08z"/></symbol>
 </svg>
 
-<header class="nav" id="nav">
+<header class="nav nav--over" id="nav">
   <div class="container nav__inner">
     <a class="brand" href="#top" aria-label="Bhumitra home">
       <img src="assets/img/bhumitra-app-icon.png" alt="" width="36" height="36">
@@ -111,12 +111,13 @@
 <main id="main">
   <!-- ===== HERO ===== -->
   <section class="hero" id="top">
+    <img class="hero__photo" src="assets/img/photos/hills-paddy-md.webp" srcset="assets/img/photos/hills-paddy-sm.webp 800w, assets/img/photos/hills-paddy-md.webp 1400w, assets/img/photos/hills-paddy.webp 2400w" sizes="100vw" width="2400" height="1350" alt="Green paddy fields below the hills in Odisha" fetchpriority="high">
     <div class="container hero__grid">
       <div class="reveal">
         <span class="eyebrow"><span class="dot"><svg><use href="#i-pin"/></svg></span>Covering all 30 districts of Odisha</span>
         <h1>Your land,<br><span class="mark">one tap</span> <span class="brand-text">away.</span></h1>
         <p class="lead">Find any plot in Odisha on a satellite map and open its official Record of Rights: owners, khata, area and land type. You don't need a khata number, an office visit or a broker.</p>
-        <div class="stores">
+        <div class="stores stores--light">
           <a class="store js-ios" href="https://apps.apple.com/in/app/bhumitra/id6760656162" target="_blank" rel="noopener">
             <svg aria-hidden="true"><use href="#i-apple"/></svg>
             <span><small>Download on the</small><strong>App Store</strong></span>
@@ -150,16 +151,21 @@
         </div>
       </div>
     </div>
-    <div class="hero__land" role="img" aria-label="Green fields in rural Odisha"></div>
   </section>
 
   <!-- ===== PROBLEM ===== -->
   <section class="section problem" id="problem">
     <div class="container">
-      <div class="section__head reveal">
-        <p class="kicker">The problem</p>
-        <h2>Checking a piece of land shouldn't take weeks.</h2>
-        <p>Land is usually a family's biggest asset, and the information about it has always been hard to get.</p>
+      <div class="problem__top">
+        <div class="section__head reveal">
+          <p class="kicker">The problem</p>
+          <h2>Checking a piece of land shouldn't take weeks.</h2>
+          <p>Land is usually a family's biggest asset, and the information about it has always been hard to get. Most owners know their plot by sight, not by its khata number.</p>
+        </div>
+        <figure class="photo-frame reveal">
+          <img src="assets/img/photos/farmer-md.webp" srcset="assets/img/photos/farmer-sm.webp 800w, assets/img/photos/farmer-md.webp 1400w" sizes="(max-width: 1020px) 100vw, 560px" width="1400" height="1092" alt="A rice farmer standing in his paddy field near Anantapalli village, Odisha" loading="lazy">
+          <figcaption>Near Anantapalli village, Odisha</figcaption>
+        </figure>
       </div>
       <div class="pains">
         <article class="pain reveal">
@@ -250,6 +256,30 @@
     </div>
   </section>
 
+  <!-- ===== WHO IT'S FOR ===== -->
+  <section class="section people" aria-labelledby="people-h">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="kicker">Who it's for</p>
+        <h2 id="people-h">For everyone who owns, buys or inherits land.</h2>
+      </div>
+      <div class="people__grid">
+        <article class="person reveal">
+          <img src="assets/img/photos/transplanting-md.webp" srcset="assets/img/photos/transplanting-sm.webp 800w, assets/img/photos/transplanting-md.webp 1400w" sizes="(max-width: 760px) 100vw, 380px" width="1400" height="955" alt="Women transplanting paddy in a flooded field near a village in Odisha" loading="lazy">
+          <div><h3>Farmers and landowners</h3><p>Check your khata, shares and land type before a loan, a season's lease or a family decision.</p></div>
+        </article>
+        <article class="person reveal">
+          <img src="assets/img/photos/harvest-md.webp" srcset="assets/img/photos/harvest-sm.webp 800w, assets/img/photos/harvest-md.webp 1400w" sizes="(max-width: 760px) 100vw, 380px" width="1400" height="937" alt="People harvesting ripe paddy together in Odisha" loading="lazy">
+          <div><h3>Families</h3><p>After an inheritance, open the record together and see whose name is on each plot and what share each person holds.</p></div>
+        </article>
+        <article class="person reveal">
+          <img src="assets/img/photos/plots-md.webp" srcset="assets/img/photos/plots-sm.webp 800w, assets/img/photos/plots-md.webp 1400w" sizes="(max-width: 760px) 100vw, 380px" width="1400" height="788" alt="Harvested fields divided by bunds and trees in Odisha" loading="lazy">
+          <div><h3>Buyers</h3><p>Check the owner, the boundary and the government value before you pay an advance to anyone.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== FEATURES ===== -->
   <section class="section features" id="features">
     <div class="container">
@@ -260,6 +290,7 @@
       </div>
       <div class="bento">
         <article class="tile tile--hero reveal">
+          <img class="tile__photo" src="assets/img/photos/balasore-sm.webp" width="800" height="451" alt="" loading="lazy">
           <div class="tile__ico" style="background:rgba(255,255,255,.14);color:#c77726"><svg><use href="#i-pin"/></svg></div>
           <h3>Plot boundaries on a live map</h3>
           <p>Every plot in the village is outlined on satellite imagery. Tap any one to see its details.</p>
@@ -356,7 +387,7 @@
 
   <!-- ===== TRUST ===== -->
   <section class="section trust" aria-labelledby="trust-h">
-    <div class="trust__bg" role="img" aria-label="Aerial view of the Puri coastline and farmland in Odisha"></div>
+    <img class="trust__bg" src="assets/img/photos/sunset-md.webp" srcset="assets/img/photos/sunset-sm.webp 800w, assets/img/photos/sunset-md.webp 1400w, assets/img/photos/sunset.webp 2400w" sizes="100vw" width="2400" height="1800" alt="Sunset over the fields at Raiberuan village, Puri district" loading="lazy">
     <div class="container">
       <p class="kicker reveal">Built for Odisha</p>
       <h2 id="trust-h" class="reveal">Built on official data. Designed so anyone can use it.</h2>
@@ -451,7 +482,7 @@
         </div>
       </div>
     </div>
-    <div class="cta__land" aria-hidden="true"></div>
+    <img class="cta__land" src="assets/img/photos/monsoon-paddy-md.webp" srcset="assets/img/photos/monsoon-paddy-sm.webp 800w, assets/img/photos/monsoon-paddy-md.webp 1400w, assets/img/photos/monsoon-paddy.webp 2400w" sizes="100vw" width="2400" height="1535" alt="" loading="lazy">
   </section>
 </main>
 
@@ -467,6 +498,7 @@
         <a href="/support/">Support</a>
         <a href="/privacy/">Privacy</a>
         <a href="/terms/">Terms</a>
+        <a href="/credits/">Photo credits</a>
         <a href="mailto:support@getbhumitra.in">support@getbhumitra.in</a>
         <a href="https://apps.apple.com/in/app/bhumitra/id6760656162" target="_blank" rel="noopener">App Store</a>
         <span>© <span id="yr">2026</span> Bhumitra</span>

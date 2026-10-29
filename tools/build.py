@@ -29,6 +29,7 @@ STATIC_PAGES = [
     ("/support/", "0.5", "monthly"),
     ("/privacy/", "0.3", "yearly"),
     ("/terms/", "0.3", "yearly"),
+    ("/credits/", "0.2", "yearly"),
 ]
 
 META_RE = re.compile(r"^\s*<!--meta\s+(\{.*?\})\s*-->", re.S)
@@ -156,7 +157,7 @@ def header(depth: int) -> str:
 
 def footer(depth: int) -> str:
     up = "../" * depth
-    return f"""  <footer><div class="container"><div class="foot"><div class="foot__by"><img src="{up}assets/img/bhumitra-app-icon.png" alt="Bhumitra" width="30" height="30"><span>Bhumitra</span></div><nav aria-label="Footer"><a href="/blog/">Guides</a><a href="/support/">Support</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="mailto:{EMAIL}">{EMAIL}</a></nav></div>
+    return f"""  <footer><div class="container"><div class="foot"><div class="foot__by"><img src="{up}assets/img/bhumitra-app-icon.png" alt="Bhumitra" width="30" height="30"><span>Bhumitra</span></div><nav aria-label="Footer"><a href="/blog/">Guides</a><a href="/support/">Support</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/credits/">Photo credits</a><a href="mailto:{EMAIL}">{EMAIL}</a></nav></div>
   <p class="disclaimer">Bhumitra is an independent app and is not affiliated with the Government of Odisha. Guides are for general information and are not legal advice. Rates and rules change; confirm with the concerned revenue or registration office.</p></div></footer>
 </body>
 </html>
@@ -348,6 +349,25 @@ Sitemap: {SITE}/sitemap.xml
 """
 
 
+def render_credits() -> str:
+    data = json.loads((ROOT / "content" / "photo-credits.json").read_text(encoding="utf-8"))
+    rows = "\n".join(
+        f"""<li class="credit"><img src="../assets/img/photos/{name}-sm.webp" alt="" width="160" height="100" loading="lazy">
+  <div><b>{esc(c['description'])}</b><span>Photo by {esc(c['artist'] or 'unknown')}, <a href="{esc(c['licenseUrl'] or c['source'])}" target="_blank" rel="noopener license">{esc(c['license'])}</a>, via <a href="{esc(c['source'])}" target="_blank" rel="noopener">Wikimedia Commons</a>. Colour and contrast adjusted, resized and cropped.</span></div></li>"""
+        for name, c in data.items()
+    )
+    desc = "Credits and licences for the photographs of Odisha used on the Bhumitra website."
+    return f"""{head(title='Photo credits | Bhumitra', description=desc, path='/credits/', image='/assets/img/og/home.jpg', og_type='website', jsonld=[], depth=1)}
+{header(1)}
+  <main id="main">
+    <section class="legal-hero"><div class="container"><p class="kicker">Credits</p><h1>Photo credits</h1><p>The photographs of Odisha on this site are by the photographers below, shared on Wikimedia Commons under Creative Commons licences. Thank you to each of them.</p></div></section>
+    <div class="legal-content"><article class="legal-card"><ul class="credits">
+{rows}
+    </ul><p>Images adapted from CC BY-SA originals, including the blog thumbnails built on them, are shared under the same licence. App screenshots and illustrations are © Bhumitra.</p></article></div>
+  </main>
+{footer(1)}"""
+
+
 def home_cards(posts: list[dict]) -> str:
     return "\n".join(card(p, "") for p in posts[:3])
 
@@ -360,6 +380,8 @@ def main() -> None:
         dest.write_text(render_post(p, posts), encoding="utf-8")
     (OUT / "index.html").write_text(render_index(posts), encoding="utf-8")
     (OUT / "feed.xml").write_text(render_feed(posts), encoding="utf-8")
+    (ROOT / "credits").mkdir(exist_ok=True)
+    (ROOT / "credits" / "index.html").write_text(render_credits(), encoding="utf-8")
     (ROOT / "sitemap.xml").write_text(render_sitemap(posts), encoding="utf-8")
     (ROOT / "robots.txt").write_text(render_robots(), encoding="utf-8")
 

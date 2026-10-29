@@ -49,6 +49,21 @@ def gradient(c1, c2, size=(W, H)) -> Image.Image:
     return g
 
 
+PHOTOS = IMG / "photos"
+
+
+def photo_canvas(name: str, focus_y: float = 0.5) -> Image.Image:
+    """A real photo, darkened and tinted brand-green so white text and cards stay readable."""
+    base = cover_crop(PHOTOS / f"{name}.webp", focus_y).convert("RGBA")
+    tint = Image.new("RGBA", (W, H))
+    px = tint.load()
+    for xx in range(W):
+        a = round(230 - 120 * (xx / W))  # heavier on the text side
+        for yy in range(H):
+            px[xx, yy] = (4, 40, 27, a)
+    return Image.alpha_composite(base, tint)
+
+
 def brand_canvas() -> Image.Image:
     base = gradient(BRAND_DARK, BRAND).convert("RGBA")
     glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -124,7 +139,7 @@ def share_image(cover: Image.Image, title: str, kicker: str) -> Image.Image:
 
 
 def device_cover() -> Image.Image:
-    c = brand_canvas()
+    c = photo_canvas("green-paddy")
     paste_device(c, 700, 36, 600)
     d = ImageDraw.Draw(c)
     d.text((80, 170), "RECORD OF RIGHTS", font=font("Bold", 26), fill=MINT)
@@ -134,7 +149,7 @@ def device_cover() -> Image.Image:
 
 
 def units_cover() -> Image.Image:
-    c = brand_canvas()
+    c = photo_canvas("plots")
     rows = [("1 acre", "100 decimal"), ("1 decimal", "435.6 sq ft"), ("1 guntha", "4 decimal"), ("1 bigha", "33.33 decimal")]
     panel = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     pd = ImageDraw.Draw(panel)
@@ -154,7 +169,7 @@ def units_cover() -> Image.Image:
 
 
 def home_share() -> Image.Image:
-    c = brand_canvas()
+    c = photo_canvas("hills-paddy")
     paste_device(c, 760, 40, 590)
     d = ImageDraw.Draw(c)
     brand_mark(c, 72, 64)
@@ -174,8 +189,8 @@ LINE = (210, 232, 220)
 MUTED = (110, 120, 115)
 
 
-def designed(kicker: str, lines: list[str], art) -> Image.Image:
-    c = brand_canvas()
+def designed(kicker: str, lines: list[str], art, photo: str | None = None) -> Image.Image:
+    c = photo_canvas(photo) if photo else brand_canvas()
     brand_mark(c, 64, 52, size=48)
     d = ImageDraw.Draw(c)
     d.text((64, 190), kicker.upper(), font=font("Bold", 24), fill=MINT)
@@ -334,26 +349,26 @@ def art_govt(d, im):
 
 
 DESIGNED = {
-    "bhulekh-odisha-plot-details-by-name": ("Land records", ["Find land", "records by", "owner name"], art_search),
-    "odisha-village-map-plot-map-online": ("Maps", ["See your", "village and", "plot map"], art_map),
-    "odisha-land-mutation-apply-status": ("Mutation", ["Change the", "owner name", "in the RoR"], art_mutation),
-    "encumbrance-certificate-odisha-online": ("Encumbrance certificate", ["Check every", "past sale", "and loan"], art_document),
-    "land-conversion-odisha-gharabari": ("Land conversion", ["Agricultural", "land to", "gharabari"], art_conversion),
-    "kisam-of-land-odisha-list": ("Kisam", ["Every land", "type in an", "Odisha RoR"], art_kisam),
-    "pay-khajana-land-revenue-online-odisha": ("Khajana", ["Pay land", "revenue", "online"], art_receipt),
-    "benchmark-valuation-odisha-land-value": ("Benchmark value", ["The govt", "value of", "your land"], art_bars),
-    "odisha-land-registration-process": ("Registration", ["Register", "land, step", "by step"], art_steps),
-    "government-land-or-private-odisha": ("Government land", ["Govt land", "or private?", "Check first"], art_govt),
+    "bhulekh-odisha-plot-details-by-name": ("Land records", ["Find land", "records by", "owner name"], art_search, "farmer"),
+    "odisha-village-map-plot-map-online": ("Maps", ["See your", "village and", "plot map"], art_map, "plots"),
+    "odisha-land-mutation-apply-status": ("Mutation", ["Change the", "owner name", "in the RoR"], art_mutation, "village"),
+    "encumbrance-certificate-odisha-online": ("Encumbrance certificate", ["Check every", "past sale", "and loan"], art_document, "green-paddy"),
+    "land-conversion-odisha-gharabari": ("Land conversion", ["Agricultural", "land to", "gharabari"], art_conversion, "transplanting"),
+    "kisam-of-land-odisha-list": ("Kisam", ["Every land", "type in an", "Odisha RoR"], art_kisam, "balasore"),
+    "pay-khajana-land-revenue-online-odisha": ("Khajana", ["Pay land", "revenue", "online"], art_receipt, "harvest"),
+    "benchmark-valuation-odisha-land-value": ("Benchmark value", ["The govt", "value of", "your land"], art_bars, "hills"),
+    "odisha-land-registration-process": ("Registration", ["Register", "land, step", "by step"], art_steps, "buffalo"),
+    "government-land-or-private-odisha": ("Government land", ["Govt land", "or private?", "Check first"], art_govt, "sunset"),
 }
 
 # slug -> cover builder
 COVERS = {
-    "how-to-check-land-records-odisha-online": lambda: cover_crop(IMG / "landscape.webp", 0.7),
+    "how-to-check-land-records-odisha-online": lambda: cover_crop(PHOTOS / "hills-paddy.webp", 0.55),
     "record-of-rights-odisha-explained": device_cover,
-    "find-plot-number-khata-number-odisha": lambda: cover_crop(IMG / "night.webp", 0.5),
+    "find-plot-number-khata-number-odisha": lambda: cover_crop(PHOTOS / "plots.webp", 0.6),
     "odisha-land-measurement-units": units_cover,
-    "stamp-duty-registration-charges-odisha": lambda: cover_crop(IMG / "puri.webp", 0.5),
-    "land-buying-checklist-odisha": lambda: cover_crop(IMG / "hero-tall.webp", 0.72),
+    "stamp-duty-registration-charges-odisha": lambda: cover_crop(PHOTOS / "monsoon-paddy.webp", 0.5),
+    "land-buying-checklist-odisha": lambda: cover_crop(PHOTOS / "village.webp", 0.55),
 }
 
 
