@@ -32,6 +32,24 @@ const PATHS = {
   play: <path fill="currentColor" stroke="none" d="M4.2 2.7c-.5-.28-1.2.08-1.2.65v17.3c0 .57.7.93 1.2.65l16-8.65c.53-.28.53-1.03 0-1.32l-16-8.65z" />,
   list: <path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" />,
   history: <><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6" /><path d="M3.5 4.5V9H8M12 8v4.5l3 2" /></>,
+  // Record section glyphs, matching the SF Symbols the iOS land report uses.
+  /** mappin.and.ellipse */
+  pinEllipse: <><path d="M12 15.5s-4.8-4.2-4.8-8.1a4.8 4.8 0 0 1 9.6 0c0 3.9-4.8 8.1-4.8 8.1Z" fill="currentColor" /><circle cx="12" cy="7.4" r="1.7" fill="var(--icon-cut, #fff)" stroke="none" /><path d="M8 17.6c-2.4.4-4 1.1-4 1.9 0 1.2 3.6 2 8 2s8-.8 8-2c0-.8-1.6-1.5-4-1.9" /></>,
+  /** person.2.fill */
+  people: <><circle cx="9" cy="8" r="3.4" fill="currentColor" /><path d="M2.8 19.5c.5-3.7 3-5.8 6.2-5.8s5.7 2.1 6.2 5.8Z" fill="currentColor" /><circle cx="16.6" cy="8.6" r="2.7" fill="currentColor" stroke="none" /><path d="M16.4 13.8c2.6.1 4.4 2 4.8 5.2h-4.1" fill="currentColor" stroke="none" /></>,
+  /** square.on.square.dashed */
+  squaresDashed: <><path d="M8 16H5.5a2 2 0 0 1-2-2V5.5a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2V8" strokeDasharray="2.6 2.4" /><rect x="8" y="8" width="12.5" height="12.5" rx="2.2" /></>,
+  /** indianrupeesign.circle.fill */
+  rupee: <><circle cx="12" cy="12" r="9.5" fill="currentColor" /><path d="M8.6 7.6h6.8M8.6 10.6h6.8M10.6 7.6c3.4 0 3.4 6-1.4 6l4.6 3.8" stroke="var(--icon-cut, #fff)" strokeWidth={1.7} /></>,
+  /** text.quote */
+  quote: <><path d="M4 5.5v13" strokeWidth={2.4} /><path d="M8.5 7h11.5M8.5 12h11.5M8.5 17h7" /></>,
+  /** checkmark.seal.fill */
+  seal: <><path d="M12 2 14.12 4.08 17 3.34 17.8 6.2 20.66 7 19.92 9.88 22 12 19.92 14.12 20.66 17 17.8 17.8 17 20.66 14.12 19.92 12 22 9.88 19.92 7 20.66 6.2 17.8 3.34 17 4.08 14.12 2 12 4.08 9.88 3.34 7 6.2 6.2 7 3.34 9.88 4.08Z" fill="currentColor" stroke="none" /><path d="m8.4 12.2 2.4 2.4 4.8-5" stroke="var(--icon-cut, #fff)" strokeWidth={2} /></>,
+  /** building.columns */
+  building: <><path d="M3.5 9 12 4l8.5 5H3.5ZM4 20h16M5.5 17.5h13M6.5 10v7.5M10 10v7.5M14 10v7.5M17.5 10v7.5" /></>,
+  chevronDown: <path d="m6.5 9.5 5.5 5.5 5.5-5.5" />,
+  arrowUpRight: <path d="M7.5 16.5 16.5 7.5M9 7.5h7.5V15" />,
+  doc: <><path d="M6 3.5h8.5l3.5 3.5v13.5H6v-17Z" /><path d="M14 3.5V7h4M9 11.5h6M9 15h6" /></>,
 } as const;
 
 export type IconName = keyof typeof PATHS;

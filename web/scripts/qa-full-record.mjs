@@ -38,18 +38,21 @@ for (const [label, viewport, mobile] of [["desktop", { width: 1440, height: 900 
   await page.route(/\/api\/ror\?/, (r) => r.fulfill({ json: ror }));
   await page.route(/\/api\/ror\/benchmark-valuation/, (r) => r.fulfill({ json: value }));
   await page.goto(`${BASE}/?plot=91&lat=21.6289&lng=85.5817`);
-  await page.waitForSelector(".owners li", { timeout: 40000 });
-  await page.waitForFunction(() => !document.querySelector(".psec.is-loading"), null, { timeout: 30000 });
+  await page.waitForSelector(".rowners li", { timeout: 40000 });
+  await page.waitForFunction(() => !document.querySelector(".rsec[aria-busy]"), null, { timeout: 30000 });
   await page.waitForTimeout(1500);
   if (mobile) await page.click(".panel__grab");
   await page.waitForTimeout(500);
   await page.screenshot({ path: `${OUT}full-${label}-1.png` });
+  for (const t of ["Value & registration cost", "Sales history"]) await page.locator(".rsec__head", { hasText: t }).click();
+  await page.locator(".rlink", { hasText: "Estimate" }).click();
+  await page.waitForTimeout(400);
   await page.locator(".panel__body").evaluate((el) => el.scrollTo(0, el.scrollHeight * 0.45));
   await page.waitForTimeout(300);
   await page.screenshot({ path: `${OUT}full-${label}-2.png` });
   await page.locator(".panel__body").evaluate((el) => el.scrollTo(0, el.scrollHeight));
   await page.waitForTimeout(300);
   await page.screenshot({ path: `${OUT}full-${label}-3.png` });
-  console.log(label, "owners:", await page.locator(".owners li").count(), "value:", await page.textContent(".pvalue strong"));
+  console.log(label, "owners:", await page.locator(".rowners li").count(), "value:", await page.textContent(".pamber strong"));
 }
 await browser.close();

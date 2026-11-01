@@ -28,6 +28,7 @@
   --card: #FFFFFF;
   --panel: rgba(255, 255, 255, 0.96);
   --tint: #E6F4EC;
+  --tint-solid: #E6F4EC;
   --hover: #E7EBE8;
   --skel-a: #EEF2EF;
   --skel-b: #F7F9F8;
@@ -50,6 +51,7 @@
   --glass: rgba(22, 23, 23, 0.86);
   --glass-dark: rgba(0, 0, 0, 0.78);
   --tint: rgba(0, 217, 149, 0.16);
+  --tint-solid: #12362B;
   --hover: #262A28;
   --spring: rgba(0, 217, 149, 0.18);
   --emerald: #00D995;

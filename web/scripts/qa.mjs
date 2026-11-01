@@ -45,30 +45,47 @@ async function run(label, viewport, mobile) {
     await page.waitForSelector(".panel:not(.panel--landing)", { timeout: 6000 });
     await page.waitForTimeout(400);
     await page.screenshot({ path: `${OUT}${label}-2-loading.png` });
-    await page.waitForSelector(".panel__hero h2", { timeout: 30000 });
-    return `plot ${await page.textContent(".panel__hero h2")}`;
+    await page.waitForSelector(".pov__id h2", { timeout: 30000 });
+    return `plot ${await page.textContent(".pov__id h2")}`;
   });
 
   await step(`${label}: record sections fill in`, async () => {
-    await page.waitForFunction(() => !document.querySelector(".psec.is-loading"), null, { timeout: 60000 });
+    await page.waitForFunction(() => !document.querySelector(".rsec[aria-busy]"), null, { timeout: 60000 });
     await page.waitForTimeout(800);
     await page.screenshot({ path: `${OUT}${label}-3-details.png` });
-    const owners = await page.locator(".owners li").count();
+    const owners = await page.locator(".rowners li").count();
     const limited = await page.locator(".unlock").count();
-    const value = (await page.locator(".pvalue strong").count()) ? await page.textContent(".pvalue strong") : "needs office or n/a";
+    const value = (await page.locator(".pamber strong").count()) ? await page.textContent(".pamber strong") : "needs office or n/a";
     return `owners=${owners} limited=${limited > 0} value=${value}`;
   });
 
+  await step(`${label}: sections open and close like the app`, async () => {
+    const owners = page.locator(".rsec__head", { hasText: "Owners" });
+    if ((await owners.getAttribute("aria-expanded")) !== "false") throw new Error("sections should start collapsed");
+    await owners.click();
+    await page.waitForFunction(() => document.querySelector(".rsec.is-open .rowners"), null, { timeout: 3000 });
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: `${OUT}${label}-3b-owners.png` });
+    await page.click(".rexpand");
+    await page.waitForTimeout(400);
+    const open = await page.locator(".rsec.is-open").count();
+    await page.locator(".panel__body").evaluate((el) => el.scrollTo(0, 420));
+    await page.waitForTimeout(200);
+    await page.screenshot({ path: `${OUT}${label}-3c-all.png` });
+    await page.locator(".panel__body").evaluate((el) => el.scrollTo(0, 0));
+    return `${open} sections open`;
+  });
+
   await step(`${label}: tapping another plot switches the panel`, async () => {
-    const before = await page.textContent(".panel__hero h2");
+    const before = await page.textContent(".pov__id h2");
     const box = await page.locator(".map").boundingBox();
     await page.mouse.click(box.x + box.width * (mobile ? 0.5 : 0.7), box.y + box.height * (mobile ? 0.2 : 0.18));
-    await page.waitForFunction((b) => document.querySelector(".panel__hero h2")?.textContent !== b, before, { timeout: 20000 });
-    return `now plot ${await page.textContent(".panel__hero h2")}`;
+    await page.waitForFunction((b) => document.querySelector(".pov__id h2")?.textContent !== b, before, { timeout: 20000 });
+    return `now plot ${await page.textContent(".pov__id h2")}`;
   });
 
   await step(`${label}: close returns to landing`, async () => {
-    await page.click('.panel__actions button[aria-label="Close"]');
+    await page.click('.pov__actions button[aria-label="Close"]');
     await page.waitForSelector(".panel--landing", { timeout: 4000 });
   });
 
@@ -99,8 +116,8 @@ async function run(label, viewport, mobile) {
 
   await step(`${label}: dark land panel`, async () => {
     await page.click('button[aria-label="Go to my location"]');
-    await page.waitForSelector(".panel__hero h2", { timeout: 30000 });
-    await page.waitForFunction(() => !document.querySelector(".psec.is-loading"), null, { timeout: 60000 });
+    await page.waitForSelector(".pov__id h2", { timeout: 30000 });
+    await page.waitForFunction(() => !document.querySelector(".rsec[aria-busy]"), null, { timeout: 60000 });
     await page.waitForTimeout(800);
     await page.screenshot({ path: `${OUT}${label}-6-dark-panel.png` });
   });

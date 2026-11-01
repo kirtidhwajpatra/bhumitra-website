@@ -1,0 +1,135 @@
+/* Land details panel, matching the iOS plot sheet and land report
+   (PlotDetailSheet.swift, LandRecordReportView.swift, RecordComponents.swift). */
+
+/* Overview: plot title, area · land type · khatian strip, owners, govt value */
+.pov { padding: 18px 20px 16px; }
+.pov__top { display: flex; align-items: flex-start; gap: 12px; }
+.pov__id { flex: 1; min-width: 0; }
+.pov__id h2 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 24px; font-weight: 700; line-height: 1.2; letter-spacing: -.02em; }
+.pov__id p { margin: 2px 0 0; font-size: 14px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pov__seal { flex: none; color: #16A34A; }
+:root[data-theme="dark"] .pov__seal { color: var(--mint); --icon-cut: #161717; }
+.pov__skel-title { display: block; width: 120px; height: 28px; }
+.pov__actions { display: flex; gap: 8px; flex: none; }
+.sheet-btn { width: 36px; height: 36px; border-radius: 50%; border: 0; display: grid; place-items: center; background: var(--surface-2); color: var(--ink); cursor: pointer; transition: background .2s, transform .15s var(--ease); }
+.sheet-btn:hover { background: var(--hover); }
+.sheet-btn:active { transform: scale(.94); }
+.sheet-btn[aria-pressed="true"] { color: var(--emerald); }
+.pov__body { display: grid; gap: 14px; margin-top: 14px; }
+
+.pmetrics { display: flex; }
+.pmetric { flex: 1; min-width: 0; }
+.pmetric + .pmetric { padding-left: 12px; margin-left: 12px; border-left: 1px solid var(--line); }
+.pmetric small { display: block; font-size: 12px; font-weight: 500; color: var(--text-2); }
+.pmetric b { display: block; margin-top: 4px; font-size: 16px; font-weight: 600; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.powner { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 15.5px; font-weight: 500; }
+.powner svg { flex: none; color: var(--text-2); }
+.powner > span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.pamber { --amber: #FFB355; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 12px; background: rgba(255, 179, 85, .12); }
+.pamber > svg { flex: none; color: var(--amber); --icon-cut: #fff; }
+.pamber small { display: block; font-size: 12px; font-weight: 500; color: var(--text-2); }
+.pamber strong { display: block; font-size: 17px; font-weight: 700; line-height: 20px; }
+
+/* Sections: edge-to-edge hairlines, no cards */
+.rsecs { border-top: 1px solid var(--line); }
+.rsec { border-bottom: 1px solid var(--line); }
+.rsec__h { margin: 0; font: inherit; }
+.rsec__head { width: 100%; display: flex; align-items: center; gap: 10px; padding: 16px 20px; border: 0; background: none; cursor: pointer; text-align: left; color: var(--ink); transition: background .15s; }
+.rsec__head:hover { background: var(--surface-2); }
+.rsec__head:focus-visible { outline-offset: -3px; }
+.rtile { width: 32px; height: 32px; flex: none; display: grid; place-items: center; border-radius: 9.6px; background: var(--tint); color: var(--emerald); --icon-cut: var(--tint-solid, #E6F4EC); }
+.rtile svg { width: 15px; height: 15px; }
+.rsec__title { font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+.rsec__chev { margin-left: auto; width: 28px; height: 28px; flex: none; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--text-2); transition: transform .2s var(--ease); }
+.rsec.is-open .rsec__chev { transform: rotate(180deg); }
+.rsec__head .spinner { margin-left: 4px; }
+.rchip { padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; letter-spacing: .02em; color: #B45309; background: #FEF3C7; border: 1px solid rgba(180, 83, 9, .18); }
+:root[data-theme="dark"] .rchip { color: #FBBF24; background: rgba(251, 191, 36, .14); border-color: rgba(251, 191, 36, .2); }
+
+/* Smooth open / close */
+.rsec__wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .22s var(--ease); }
+.rsec.is-open .rsec__wrap { grid-template-rows: 1fr; }
+.rsec__body { overflow: hidden; padding: 0 20px; }
+.rsec.is-open .rsec__body { padding-bottom: 16px; }
+
+/* Label left, value right */
+.rrow { padding: 11px 0; border-bottom: .5px solid color-mix(in srgb, var(--ink) 9%, transparent); }
+.rrow:last-of-type { border-bottom: 0; }
+.rrow__line { display: flex; align-items: baseline; gap: 12px; }
+.rrow__label { width: 128px; flex: none; font-size: 14.5px; font-weight: 500; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rrow__value { flex: 1; min-width: 0; text-align: right; font-size: 14.5px; font-weight: 500; overflow-wrap: anywhere; }
+.rrow__value small { display: block; margin-top: 2px; font-size: 12px; font-weight: 400; color: var(--text-2); }
+.rrow__value.is-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; }
+.rrow__value.is-muted { color: var(--text-2); }
+.rrow__value.is-good { color: #16A34A; }
+.rrow__value.is-bad { color: #EF4444; }
+.rrow__below { margin: 6px 0 0; font-size: 12px; color: var(--text-2); }
+.rbig { font-size: 16px; font-weight: 700; }
+.rlink { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; padding: 0; border: 0; background: none; color: var(--emerald); font: 500 14.5px var(--font); text-decoration: none; cursor: pointer; }
+.rlink:hover { text-decoration: underline; }
+.rlink svg { flex: none; }
+.rlink__clip { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rnote { margin: 10px 0 0; font-size: 13px; line-height: 1.45; color: var(--text-2); }
+.rempty { margin: 0; padding: 4px 0; font-size: 14px; color: var(--text-2); }
+.rerror p { margin: 0 0 10px; color: var(--warn); font-size: 14.5px; }
+.rskel { display: grid; gap: 14px; padding: 6px 0; }
+.rskel__row { display: flex; justify-content: space-between; gap: 12px; }
+.rskel__row .skeleton { display: block; height: 15px; border-radius: 4px; }
+.rverified { margin: 12px 0 0; font-size: 12.5px; color: var(--emerald-dark); }
+.rremarks { margin: 0; font-size: 15px; line-height: 1.6; }
+
+/* Owners: number, initials avatar, name, then relative / residence / share */
+.rowners { list-style: none; margin: 0; padding: 4px 0 0; display: grid; gap: 14px; }
+.rowners li { display: flex; align-items: flex-start; gap: 10px; }
+.rowners__n { min-width: 20px; font-size: 16px; font-weight: 700; color: var(--text-2); font-variant-numeric: tabular-nums; line-height: 34px; }
+.ravatar { width: 34px; height: 34px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--tint); color: var(--emerald); border: 1px solid color-mix(in srgb, var(--emerald) 14%, transparent); font-size: 13.5px; font-weight: 600; }
+.rowners__text { min-width: 0; display: grid; gap: 2px; padding-top: 6px; }
+.rowners__text b { font-size: 16px; font-weight: 600; line-height: 1.35; }
+.rowners__text > span { font-size: 13px; }
+.rowners__text em { font-style: normal; font-weight: 500; color: var(--text-2); }
+
+/* Other plots in the khata */
+.rplots { list-style: none; margin: 0 0 4px; padding: 4px 0 0; display: grid; gap: 0; }
+.rplots li { display: grid; grid-template-columns: 1fr auto; gap: 0 12px; padding: 9px 0; border-bottom: .5px solid color-mix(in srgb, var(--ink) 9%, transparent); font-size: 14px; }
+.rplots li span:first-of-type { text-align: right; font-weight: 500; }
+.rplots li span[lang] { grid-column: 1 / -1; font-size: 12.5px; color: var(--text-2); }
+
+.rselect { display: flex; align-items: center; gap: 12px; }
+.rselect > span { width: 128px; flex: none; font-size: 14.5px; font-weight: 500; color: var(--text-2); }
+.rselect select { flex: 1; min-width: 0; height: 40px; padding: 0 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: 500 14px var(--font); }
+
+.rexpand { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 14px 20px; border: 0; background: none; color: var(--text-2); font: 600 13.5px var(--font); cursor: pointer; }
+.rexpand:hover { color: var(--emerald); }
+.rexpand svg { transition: transform .2s var(--ease); }
+
+/* Registration cost calculator (opens from "Your deal") */
+.calc { margin: 6px 0 4px; padding: 14px; border-radius: 14px; background: var(--surface-2); }
+.calc__field { display: grid; gap: 4px; font-size: 12.5px; color: var(--text-2); }
+.calc__field input { height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); font: 600 16px var(--font); color: var(--ink); }
+.calc__field input:focus { outline: 2px solid var(--lime); border-color: var(--emerald); }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 10px 0; padding: 4px; border-radius: 12px; background: var(--card); }
+.seg button { height: 34px; border: 0; border-radius: 9px; background: transparent; font-weight: 600; font-size: 14px; cursor: pointer; color: var(--text-2); }
+.seg button.is-on { background: var(--surface-2); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.calc__out { margin: 0; display: grid; gap: 8px; }
+.calc__out div { display: flex; justify-content: space-between; font-size: 14.5px; }
+.calc__out dt { color: var(--text-2); }
+.calc__out dd { margin: 0; font-weight: 600; }
+.calc__total { padding-top: 8px; border-top: 1px dashed var(--line); }
+.calc__total dt, .calc__total dd { color: var(--ink) !important; font-weight: 700 !important; font-size: 16px; }
+
+/* Unlock card (only if the backend ever sends a masked preview again) */
+.unlock { margin-top: 12px; padding: 16px; border-radius: var(--radius); background: var(--surface-2); text-align: center; }
+.unlock__ico { width: 42px; height: 42px; border-radius: 50%; margin: 0 auto 8px; display: grid; place-items: center; background: var(--spring); color: var(--emerald); }
+.unlock b { display: block; }
+.unlock p { margin: 4px 0 12px; font-size: 13.5px; color: var(--text-2); }
+.unlock .stores { justify-content: center; }
+
+.panel--plot .panel__body { padding: 0 0 20px; }
+.panel--plot .panel__source { margin: 18px 20px 0; }
+
+@media (max-width: 760px) {
+  .panel--plot .pov { padding-top: 24px; }
+  .rrow__label, .rselect > span { width: 116px; }
+}
