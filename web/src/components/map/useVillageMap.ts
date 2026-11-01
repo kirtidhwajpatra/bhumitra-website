@@ -1,6 +1,7 @@
 // Map engine: creates the MapLibre map, loads a village's plot outlines, and resolves
 // taps to plots. UI components only call the functions this hook returns.
-import maplibregl, { type GeoJSONSource, type Map as MLMap } from "maplibre-gl";
+import type { GeoJSONSource, Map as MLMap } from "maplibre-gl";
+import { installDistricts, type DistrictInfo } from "./districts";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../../lib/api";
 import { areaSqM, bbox, ODISHA_CENTER, SQM_PER_ACRE } from "../../lib/geo";
@@ -41,8 +42,13 @@ export function useVillageMap(container: React.RefObject<HTMLDivElement | null>)
   const [ready, setReady] = useState(false);
   const [village, setVillage] = useState<VillageContext | null>(null);
   const [selected, setSelected] = useState<SelectedPlot | null>(null);
+  /** A tap is being resolved to a plot; the panel is open and showing skeletons. */
+  const [resolving, setResolving] = useState(false);
+  const tapSeq = useRef(0);
   const [status, setStatusState] = useState<Status | null>(null);
   const [plotCount, setPlotCount] = useState(0);
+  const [hoverDistrict, setHoverDistrict] = useState<DistrictInfo | null>(null);
+  const [zoom, setZoom] = useState(6);
 
   const setStatus = useCallback((s: Status | null, hideAfterMs?: number) => {
     window.clearTimeout(statusTimer.current);
@@ -89,8 +95,9 @@ export function useVillageMap(container: React.RefObject<HTMLDivElement | null>)
     if (!map) return;
     (map.getSource("selected") as GeoJSONSource).setData({ type: "Feature", geometry: plot.geometry, properties: {} });
     const [x1, y1, x2, y2] = bbox(plot.geometry);
-    const bottom = window.innerWidth < 760 ? Math.round(window.innerHeight * 0.42) : 80;
-    const left = window.innerWidth < 760 ? 40 : 440;
+    // Keep the plot clear of the land panel (left on desktop, bottom sheet on phones).
+    const bottom = window.innerWidth < 760 ? Math.round(window.innerHeight * 0.5) : 80;
+    const left = window.innerWidth < 760 ? 40 : 480;
     map.fitBounds([[x1, y1], [x2, y2]], { padding: { top: 120, bottom, left, right: 90 }, maxZoom: 18.5, duration: 900 });
   }, []);
 
@@ -98,6 +105,7 @@ export function useVillageMap(container: React.RefObject<HTMLDivElement | null>)
   const selectAt = useCallback(async (lng: number, lat: number): Promise<SelectedPlot | null> => {
     const map = mapRef.current;
     if (!map) return null;
+    const seq = ++tapSeq.current;
     const pt = map.project([lng, lat]);
     const hit = map.getLayer("parcel-fill") ? map.queryRenderedFeatures(pt, { layers: ["parcel-fill"] })[0] : undefined;
     const fid = hit?.properties?.fid;
@@ -110,14 +118,21 @@ export function useVillageMap(container: React.RefObject<HTMLDivElement | null>)
         areaAcre: areaSqM(geometry) / SQM_PER_ACRE,
         village: villageRef.current,
       };
+      setResolving(false);
       setSelected(plot);
       focusPlot(plot);
       return plot;
     }
-    setStatus({ text: "Finding the plot here…", busy: true });
+    // Not in the loaded outlines: open the panel now, mark the spot, and look it up.
+    setResolving(true);
+    setSelected(null);
+    (map.getSource("selected") as GeoJSONSource).setData({ type: "Feature", geometry: { type: "Point", coordinates: [lng, lat] }, properties: {} });
     try {
       const r = await api.plotAtPoint(lat, lng);
+      if (seq !== tapSeq.current) return null; // a newer tap won
       if (!r.plot) {
+        setResolving(false);
+        (map.getSource("selected") as GeoJSONSource).setData({ type: "FeatureCollection", features: [] });
         setStatus({ text: "No plot found here. Odisha's plot maps cover revenue villages; try zooming into fields or houses.", tone: "warn" }, 5000);
         return null;
       }
@@ -128,30 +143,40 @@ export function useVillageMap(container: React.RefObject<HTMLDivElement | null>)
         areaAcre: r.plot.area_acre ?? areaSqM(r.plot.geometry) / SQM_PER_ACRE,
         village: ctx,
       };
-      setStatus(null);
+      setResolving(false);
       setSelected(plot);
       focusPlot(plot);
       void loadVillage(ctx);
       return plot;
     } catch {
+      if (seq !== tapSeq.current) return null;
+      setResolving(false);
+      (map.getSource("selected") as GeoJSONSource).setData({ type: "FeatureCollection", features: [] });
       setStatus({ text: "The plot map service is busy. Try again in a moment.", tone: "warn" }, 5000);
       return null;
     }
   }, [focusPlot, loadVillage, setStatus]);
 
   const clearSelection = useCallback(() => {
+    tapSeq.current++;
+    setResolving(false);
     setSelected(null);
     (mapRef.current?.getSource("selected") as GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features: [] });
   }, []);
 
-  // Create the map once.
+  // Create the map once. MapLibre is loaded in the browser only (the page is server-rendered).
   useEffect(() => {
     if (!container.current || mapRef.current) return;
+    let cancelled = false;
+    let created: MLMap | null = null;
+    void (async () => {
+    const maplibregl = (await import("maplibre-gl")).default;
+    if (cancelled || !container.current) return;
     const map = new maplibregl.Map({
       container: container.current,
       style: buildStyle(),
       center: ODISHA_CENTER,
-      zoom: 6.3,
+      zoom: window.innerWidth < 760 ? 5.6 : 6.6,
       minZoom: 5,
       maxZoom: 19.5,
       maxBounds: [[78, 15], [91, 25]],
@@ -161,8 +186,13 @@ export function useVillageMap(container: React.RefObject<HTMLDivElement | null>)
     });
     map.touchZoomRotate.disableRotation();
     mapRef.current = map;
+    created = map;
 
-    map.on("load", () => setReady(true));
+    map.on("load", () => {
+      setReady(true);
+      void installDistricts(map, setHoverDistrict, () => setHoverDistrict(null));
+    });
+    map.on("zoomend", () => setZoom(map.getZoom()));
 
     // Hover highlight on desktop.
     map.on("mousemove", "parcel-fill", (e) => {
@@ -179,8 +209,10 @@ export function useVillageMap(container: React.RefObject<HTMLDivElement | null>)
       map.getCanvas().style.cursor = "";
     });
 
+    })();
     return () => {
-      map.remove();
+      cancelled = true;
+      created?.remove();
       mapRef.current = null;
     };
   }, [container]);
@@ -227,5 +259,5 @@ export function useVillageMap(container: React.RefObject<HTMLDivElement | null>)
     for (const id of PLOT_LAYERS) map.setLayoutProperty(id, "visibility", visible ? "visible" : "none");
   }, []);
 
-  return { map: mapRef, ready, village, plotCount, selected, status, setStatus, selectAt, loadVillage, clearSelection, setBasemap, setPlotsVisible };
+  return { map: mapRef, ready, zoom, hoverDistrict, village, plotCount, selected, resolving, status, setStatus, selectAt, loadVillage, clearSelection, setBasemap, setPlotsVisible };
 }

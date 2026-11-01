@@ -30,13 +30,49 @@ export function buildStyle(): StyleSpecification {
       satellite: { type: "raster", tiles: [SAT], tileSize: 256, maxzoom: 18, attribution: "Imagery © Esri, Maxar, Earthstar Geographics" },
       labels: { type: "raster", tiles: [LABELS], tileSize: 256, maxzoom: 18 },
       streets: { type: "raster", tiles: [STREETS], tileSize: 256, maxzoom: 19, attribution: "© OpenStreetMap contributors" },
+      districts: { type: "geojson", data: EMPTY, promoteId: "district_id" },
       parcels: { type: "geojson", data: EMPTY, promoteId: "fid" },
       selected: { type: "geojson", data: EMPTY },
     },
     layers: [
       { id: "satellite", type: "raster", source: "satellite" },
       { id: "streets", type: "raster", source: "streets", layout: { visibility: "none" } },
-      { id: "labels", type: "raster", source: "labels", paint: { "raster-opacity": 0.9 } },
+      { id: "labels", type: "raster", source: "labels", paint: { "raster-opacity": ["interpolate", ["linear"], ["zoom"], 6, 0.35, 9, 0.9] } },
+      // Odisha landing view: tint the state and outline its 30 districts.
+      {
+        id: "district-fill",
+        type: "fill",
+        source: "districts",
+        maxzoom: 11.5,
+        paint: {
+          "fill-color": SELECTED,
+          "fill-opacity": ["interpolate", ["linear"], ["zoom"], 6, ["case", ["boolean", ["feature-state", "hover"], false], 0.38, 0.12], 10, ["case", ["boolean", ["feature-state", "hover"], false], 0.2, 0.04], 11.5, 0],
+        },
+      },
+      {
+        id: "district-line",
+        type: "line",
+        source: "districts",
+        paint: {
+          "line-color": ["case", ["boolean", ["feature-state", "hover"], false], SELECTED, "rgba(219, 248, 181, 0.95)"],
+          "line-width": ["interpolate", ["linear"], ["zoom"], 5, ["case", ["boolean", ["feature-state", "hover"], false], 2.6, 1.3], 10, 2.2],
+          "line-opacity": ["interpolate", ["linear"], ["zoom"], 6, 1, 12, 0.35, 14, 0],
+        },
+      },
+      {
+        id: "district-label",
+        type: "symbol",
+        source: "districts",
+        maxzoom: 9.5,
+        layout: {
+          "text-field": ["get", "district_name"],
+          "text-font": ["Noto Sans Medium"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 6, 11, 9, 15],
+          "symbol-placement": "point",
+          "text-allow-overlap": false,
+        },
+        paint: { "text-color": "#ffffff", "text-halo-color": "rgba(1,39,26,0.9)", "text-halo-width": 1.4 },
+      },
       {
         id: "parcel-fill",
         type: "fill",
@@ -46,6 +82,8 @@ export function buildStyle(): StyleSpecification {
           "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.22, 0.02],
         },
       },
+      // Briefly flashed on the tapped plot before its outline arrives.
+      { id: "tap-ring", type: "circle", source: "selected", filter: ["==", ["geometry-type"], "Point"], paint: { "circle-radius": 14, "circle-color": "rgba(174,233,43,0.25)", "circle-stroke-color": SELECTED, "circle-stroke-width": 2.5 } },
       { id: "parcel-casing", type: "line", source: "parcels", paint: { "line-color": PLOT_CASING, "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.2, 18, 3.2] } },
       { id: "parcel-line", type: "line", source: "parcels", paint: { "line-color": PLOT_LINE, "line-width": ["interpolate", ["linear"], ["zoom"], 13, 0.5, 18, 1.6] } },
       {

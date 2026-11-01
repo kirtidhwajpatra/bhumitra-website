@@ -8,11 +8,6 @@ export interface SearchResult {
   latitude: number;
   longitude: number;
   boundingBox?: number[] | null;
-  revenueVillageId?: string | null;
-  gisBlockId?: string | null;
-  district?: string | null;
-  tahasil?: string | null;
-  revenueVillage?: string | null;
 }
 
 export interface SearchResponse {
@@ -30,8 +25,6 @@ export interface Extent {
   min_lat: number;
   max_lng: number;
   max_lat: number;
-  center_lng: number;
-  center_lat: number;
 }
 
 /** The village whose plot lines are on the map. */
@@ -52,7 +45,6 @@ export interface PlotAtPoint {
   area_acre?: number | null;
   village_id: string;
   village_name: string;
-  village_display_name?: string;
   tahasil_id: string;
   tahasil_name: string;
   district_id: string;
@@ -61,7 +53,7 @@ export interface PlotAtPoint {
 }
 
 export interface PlotAtPointResponse {
-  status: "exact" | "snapped" | "none" | string;
+  status: string;
   plot: PlotAtPoint | null;
   message?: string;
 }
@@ -81,6 +73,13 @@ export interface RoROwner {
   share?: string | null;
 }
 
+export interface RoRPlot {
+  plot_number: string;
+  area?: string | null;
+  land_type?: string | null;
+  remarks?: string | null;
+}
+
 export interface RoRResponse {
   success: boolean;
   plot: string;
@@ -91,8 +90,55 @@ export interface RoRResponse {
   area?: string | null;
   land_type?: string | null;
   owners: RoROwner[];
+  plots: RoRPlot[];
+  raw_fields?: Record<string, string>;
   source?: string;
   is_preview?: boolean;
   is_locked?: boolean;
-  preview_message?: string | null;
+}
+
+export interface IGRCandidate {
+  candidate_token: string;
+  registration_office_id: number;
+  registration_office_name: string;
+  village_id: number;
+  village_name: string;
+  confidence: string;
+}
+
+export interface BenchmarkResponse {
+  status: "AVAILABLE" | "NOT_FOUND" | "AMBIGUOUS" | "MAPPING_REQUIRES_USER_SELECTION" | string;
+  message?: string | null;
+  registration_office?: string | null;
+  village_thana?: string | null;
+  kisam?: string | null;
+  unit_rates?: {
+    per_acre: number;
+    per_decimal_100: number;
+    per_square_foot: number;
+  } | null;
+  highest_transaction_value?: number | null;
+  transaction_date?: string | null;
+  calculation?: { indicative_benchmark_amount?: number | null; formula?: string | null } | null;
+  candidates?: IGRCandidate[] | null;
+}
+
+export interface EstimateResponse {
+  status: string;
+  message?: string | null;
+  stamp_duty?: number | null;
+  registration_fee?: number | null;
+  total_government_charges?: number | null;
+  women_buyer_concession_applicable?: boolean;
+  concession_amount?: number | null;
+  total_after_concession?: number | null;
+  benchmark_value_for_area?: number | null;
+}
+
+/** Selected IGR jurisdiction when the backend can't pick one on its own. */
+export interface Jurisdiction {
+  regoffId: number;
+  villageId: number;
+  token: string;
+  label: string;
 }

@@ -1,22 +1,14 @@
 ---
 import MapApp from "../components/map/MapApp";
-import guides from "../data/guides.json";
+import { FAQS } from "../components/panel/LandingPanel";
 import "../styles/tokens.css";
 import "../styles/app.css";
-import "../styles/home.css";
+import "../styles/panel.css";
 
 const title = "Bhumitra: Odisha plot map & land records (Bhulekh RoR)";
 const description =
-  "See every plot in any Odisha village on a satellite map. Tap a plot to see its number, area, khata and land type from the Bhulekh Record of Rights. Free, no khata number needed.";
+  "See every plot in any Odisha village on a satellite map. Tap a plot for its owners, khata, area, kisam, government land value and registration cost from Bhulekh and IGR Odisha. Free daily searches.";
 const site = "https://getbhumitra.in";
-
-const faqs = [
-  ["How do I see the plot map of my land in Odisha?", "Search your village or town above, or tap locate. Zoom in and every plot in the village appears in yellow on the satellite map. Tap a plot to see its number, area and village."],
-  ["Is this the official Bhulekh website?", "No. Bhumitra is an independent app. It shows Record of Rights data from Odisha's public Bhulekh portal (bhulekh.ori.nic.in) and plot boundaries from the state's cadastral maps."],
-  ["Do I need a khata or plot number?", "No. You can find the plot on the map. If you already have the numbers, the Bhumitra app also searches by plot number, khata number or plot unique ID."],
-  ["Can I see the owner's name on the website?", "The website shows the khata number, recorded area and land type. Owner names and shares, the government land value and the registration cost are in the free Bhumitra app."],
-  ["Is the map a legal boundary?", "No. Plot lines from cadastral maps are for reference. For an exact boundary, ask the Revenue Inspector or a licensed surveyor. For legal use, get a certified RoR from the Tahasil office."],
-];
 
 const ld = {
   "@context": "https://schema.org",
@@ -33,7 +25,7 @@ const ld = {
       offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
     },
     { "@type": "MobileApplication", name: "Bhumitra", operatingSystem: "iOS", applicationCategory: "ReferenceApplication", downloadUrl: "https://apps.apple.com/in/app/bhumitra/id6760656162", offers: { "@type": "Offer", price: "0", priceCurrency: "INR" } },
-    { "@type": "FAQPage", mainEntity: faqs.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
+    { "@type": "FAQPage", mainEntity: FAQS.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
   ],
 };
 ---
@@ -62,53 +54,8 @@ const ld = {
   </head>
   <body>
     <main>
-      <MapApp client:only="react" />
+      <MapApp client:load />
       <noscript><p class="noscript">The Bhumitra plot map needs JavaScript. You can still read our <a href="/blog/">land record guides</a>.</p></noscript>
-
-      <a class="scroll-cue" href="#learn">About Bhumitra and Odisha land records <span aria-hidden="true">↓</span></a>
-
-      <div class="home" id="learn">
-        <section class="home__intro container">
-          <p class="kicker">Odisha land records</p>
-          <h1>Every plot in Odisha, on one map.</h1>
-          <p class="lead">Bhumitra puts Odisha's official cadastral plot map on satellite imagery. Find a village, tap a plot, and see its plot number, area, khata and land type from the Bhulekh Record of Rights. No khata number, office visit or broker needed.</p>
-          <ol class="steps">
-            <li><b>Find the village</b><span>Search a town, pick district → tahasil → village, or tap locate.</span></li>
-            <li><b>Tap the plot</b><span>All plot boundaries are drawn on the satellite map with their numbers.</span></li>
-            <li><b>Read the record</b><span>Khata, area and kisam on the web. Owners, value and costs in the app.</span></li>
-          </ol>
-        </section>
-
-        <section class="home__app container" id="get-app">
-          <div>
-            <p class="kicker">The Bhumitra app</p>
-            <h2>The full record, in your pocket.</h2>
-            <p>Owner names and shares, government land value, stamp duty and registration cost, saved plots and a shareable land report. Your first searches are free.</p>
-            <div class="stores">
-              <a class="store" href="https://apps.apple.com/in/app/bhumitra/id6760656162" target="_blank" rel="noopener"><span><small>Download on the</small><strong>App Store</strong></span></a>
-              <span class="store store--soon"><span><small>Coming soon</small><strong>Google Play</strong></span></span>
-            </div>
-          </div>
-          <img src="/img/app-icon.png" alt="Bhumitra app icon" width="160" height="160" loading="lazy" />
-        </section>
-
-        <section class="home__guides container" aria-labelledby="guides-h">
-          <h2 id="guides-h">Land record guides</h2>
-          <ul class="guide-links">
-            {guides.map((g) => <li><a href={`/blog/${g.slug}/`}><small>{g.category}</small>{g.title}</a></li>)}
-          </ul>
-        </section>
-
-        <section class="home__faq container" aria-labelledby="faq-h">
-          <h2 id="faq-h">Questions</h2>
-          {faqs.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
-        </section>
-
-        <footer class="foot container">
-          <p><a href="/blog/">Guides</a> · <a href="/support/">Support</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="mailto:support@getbhumitra.in">support@getbhumitra.in</a></p>
-          <p class="foot__fine">Bhumitra is an independent app and is not affiliated with the Government of Odisha. Records are sourced from the public Bhulekh portal and plot boundaries from available cadastral map data. Both are for information only; for legal purposes, check with the concerned revenue office.</p>
-        </footer>
-      </div>
     </main>
   </body>
 </html>

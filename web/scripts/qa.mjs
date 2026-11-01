@@ -14,9 +14,10 @@ const launch = existsSync(CHROME) ? { executablePath: CHROME } : {};
 
 const results = [];
 const step = async (name, fn) => {
+  const t = Date.now();
   try {
-    await fn();
-    results.push(`PASS ${name}`);
+    const note = await fn();
+    results.push(`PASS ${name} (${((Date.now() - t) / 1000).toFixed(1)}s)${note ? ` - ${note}` : ""}`);
   } catch (e) {
     results.push(`FAIL ${name}: ${String(e.message).split("\n")[0]}`);
   }
@@ -25,58 +26,50 @@ const step = async (name, fn) => {
 const browser = await chromium.launch({ ...launch, args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--no-sandbox"] });
 
 async function run(label, viewport, mobile) {
-  const ctx = await browser.newContext({ viewport, deviceScaleFactor: 1, isMobile: mobile, hasTouch: mobile, geolocation: { latitude: 21.6289, longitude: 85.5817 }, permissions: ["geolocation"] });
+  const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile, geolocation: { latitude: 21.6289, longitude: 85.5817 }, permissions: ["geolocation"] });
   const page = await ctx.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
 
-  await step(`${label}: map loads`, async () => {
+  await step(`${label}: Odisha landing with districts`, async () => {
     await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
     await page.waitForSelector(".maplibregl-canvas", { timeout: 20000 });
-    await page.waitForTimeout(2500);
-    await page.screenshot({ path: `${OUT}${label}-1-start.png` });
+    await page.waitForSelector(".panel--landing h1", { timeout: 5000 });
+    await page.waitForTimeout(3500);
+    await page.screenshot({ path: `${OUT}${label}-1-landing.png` });
   });
 
-  await step(`${label}: search shows results`, async () => {
-    await page.fill(".search input", "Keonjhar");
-    await page.waitForSelector(".search__row", { timeout: 15000 });
-    await page.screenshot({ path: `${OUT}${label}-2-search.png` });
-    await page.click(".search__row");
-    await page.waitForTimeout(2500);
-  });
-
-  await step(`${label}: locate loads plots near you`, async () => {
+  await step(`${label}: tap a plot opens the panel at once`, async () => {
     await page.click('button[aria-label="Go to my location"]');
-    await page.waitForSelector(".plot-card", { timeout: 30000 });
-    await page.waitForFunction(() => Number(document.querySelector(".app")?.getAttribute("data-plots")) > 0, null, { timeout: 30000 });
-    await page.waitForTimeout(2500);
-    await page.screenshot({ path: `${OUT}${label}-3-plot.png` });
-  });
-
-  await step(`${label}: tapping another plot selects it`, async () => {
-    const before = await page.textContent(".plot-card__title h2");
-    const box = await page.locator(".map").boundingBox();
-    // Tap away from the selected plot, upper part of the map.
-    await page.mouse.click(box.x + box.width * (mobile ? 0.5 : 0.62), box.y + box.height * (mobile ? 0.22 : 0.14));
-    await page.waitForFunction((b) => document.querySelector(".plot-card__title h2")?.textContent !== b, before, { timeout: 15000 });
-    await page.waitForTimeout(1500);
-    await page.screenshot({ path: `${OUT}${label}-4-plot2.png` });
-  });
-
-  await step(`${label}: land details opens with record`, async () => {
-    await page.click(".plot-card .btn--primary");
-    await page.waitForSelector(".details", { timeout: 5000 });
-    await page.waitForSelector(".details__facts, .details__card--error", { timeout: 45000 });
-    await page.screenshot({ path: `${OUT}${label}-5-details.png` });
-  });
-
-  await step(`${label}: village picker lists districts`, async () => {
-    await page.keyboard.press("Escape");
+    // The panel must appear while the plot is still resolving, before any data.
+    await page.waitForSelector(".panel:not(.panel--landing)", { timeout: 6000 });
     await page.waitForTimeout(400);
-    await page.click(".search input");
-    await page.click(".search__browse");
-    await page.waitForSelector(".picker__row", { timeout: 15000 });
-    await page.screenshot({ path: `${OUT}${label}-6-picker.png` });
+    await page.screenshot({ path: `${OUT}${label}-2-loading.png` });
+    await page.waitForSelector(".panel__hero h2", { timeout: 30000 });
+    return `plot ${await page.textContent(".panel__hero h2")}`;
+  });
+
+  await step(`${label}: record sections fill in`, async () => {
+    await page.waitForFunction(() => !document.querySelector(".psec.is-loading"), null, { timeout: 60000 });
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: `${OUT}${label}-3-details.png` });
+    const owners = await page.locator(".owners li").count();
+    const limited = await page.locator(".unlock").count();
+    const value = (await page.locator(".pvalue strong").count()) ? await page.textContent(".pvalue strong") : "needs office or n/a";
+    return `owners=${owners} limited=${limited > 0} value=${value}`;
+  });
+
+  await step(`${label}: tapping another plot switches the panel`, async () => {
+    const before = await page.textContent(".panel__hero h2");
+    const box = await page.locator(".map").boundingBox();
+    await page.mouse.click(box.x + box.width * (mobile ? 0.5 : 0.7), box.y + box.height * (mobile ? 0.2 : 0.18));
+    await page.waitForFunction((b) => document.querySelector(".panel__hero h2")?.textContent !== b, before, { timeout: 20000 });
+    return `now plot ${await page.textContent(".panel__hero h2")}`;
+  });
+
+  await step(`${label}: close returns to landing`, async () => {
+    await page.click('.panel__actions button[aria-label="Close"]');
+    await page.waitForSelector(".panel--landing", { timeout: 4000 });
   });
 
   if (errors.length) results.push(`WARN ${label}: page errors: ${errors.slice(0, 3).join(" | ")}`);

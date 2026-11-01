@@ -1,17 +1,17 @@
-// The Bhumitra web app: full-screen plot map, like the iOS home screen.
+// The Bhumitra web app: a full-screen map with a side panel, like the iOS home screen.
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { MapMouseEvent } from "maplibre-gl";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { api } from "../../lib/api";
 import { plotKey, recents, saved, toStored, type StoredPlot } from "../../lib/storage";
-import type { SearchResult, SelectedPlot, VillageContext } from "../../lib/types";
-import { Icon } from "../Icon";
-import { LandDetailsSheet } from "./LandDetailsSheet";
+import type { SearchResult, VillageContext } from "../../lib/types";
+import { LandPanel } from "../panel/LandPanel";
+import { LandingPanel } from "../panel/LandingPanel";
+import { AboutPanel } from "./AboutPanel";
 import { MapControls } from "./MapControls";
-import { PlotCard } from "./PlotCard";
 import { SearchBar } from "./SearchBar";
 import { useVillageMap } from "./useVillageMap";
 import { VillagePicker } from "./VillagePicker";
-import { AboutPanel } from "./AboutPanel";
 
 function zoomFor(type: string): number {
   const t = type.toUpperCase();
@@ -24,40 +24,36 @@ function zoomFor(type: string): number {
 export default function MapApp() {
   const container = useRef<HTMLDivElement>(null);
   const engine = useVillageMap(container);
-  const { map, ready, selected, status, setStatus, selectAt, loadVillage, clearSelection } = engine;
+  const { map, ready, selected, resolving, status, setStatus, selectAt, loadVillage, clearSelection } = engine;
   const tapPoint = useRef<[number, number] | null>(null);
 
   const [basemap, setBasemap] = useState<"satellite" | "streets">("satellite");
   const [showPlots, setShowPlots] = useState(true);
   const [locating, setLocating] = useState(false);
   const [picker, setPicker] = useState(false);
-  const [details, setDetails] = useState(false);
   const [about, setAbout] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
-  const remember = useCallback((p: SelectedPlot | null, lng: number, lat: number) => {
-    if (!p) return;
+  const pick = useCallback(async (lng: number, lat: number) => {
     tapPoint.current = [lng, lat];
+    const p = await selectAt(lng, lat);
+    if (!p) return;
     recents.add(toStored(p, [lng, lat]));
     setIsSaved(saved.has(plotKey(p)));
     const url = new URL(window.location.href);
     url.search = new URLSearchParams({ plot: p.plotNumber, lat: lat.toFixed(6), lng: lng.toFixed(6) }).toString();
     window.history.replaceState(null, "", url);
-  }, []);
+  }, [selectAt]);
 
-  const pick = useCallback(async (lng: number, lat: number) => {
-    setDetails(false);
-    const p = await selectAt(lng, lat);
-    remember(p, lng, lat);
-  }, [selectAt, remember]);
-
-  // Tap / click on the map selects the plot underneath.
+  // Tap on the map: far out, districts handle it; mid zoom, zoom in; close in, open the plot.
   useEffect(() => {
     const m = map.current;
     if (!m || !ready) return;
     const onClick = (e: MapMouseEvent) => {
-      if (m.getZoom() < 13) {
-        m.easeTo({ center: e.lngLat, zoom: Math.min(m.getZoom() + 3, 16), duration: 700 });
+      const z = m.getZoom();
+      if (z <= 10.5) return;
+      if (z < 13.5) {
+        m.easeTo({ center: e.lngLat, zoom: Math.min(z + 3, 16), duration: 700 });
         return;
       }
       void pick(e.lngLat.lng, e.lngLat.lat);
@@ -78,9 +74,24 @@ export default function MapApp() {
     }
   }, [ready]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onPlace = (r: SearchResult) => {
+  const close = () => {
     clearSelection();
+    window.history.replaceState(null, "", window.location.pathname);
+  };
+
+  const onPlace = (r: SearchResult) => {
+    close();
     map.current?.flyTo({ center: [r.longitude, r.latitude], zoom: zoomFor(r.type), duration: 1600, essential: true });
+  };
+
+  const onDistrict = async (name: string) => {
+    try {
+      const r = await api.search(`${name} district`);
+      const hit = r.results.find((x) => x.type.toUpperCase().includes("DISTRICT")) ?? r.results[0];
+      if (hit) onPlace(hit);
+    } catch {
+      setStatus({ text: "Couldn't find that district right now.", tone: "warn" }, 3500);
+    }
   };
 
   const onRecent = (p: StoredPlot) => {
@@ -90,7 +101,7 @@ export default function MapApp() {
 
   const onVillage = (v: VillageContext) => {
     setPicker(false);
-    clearSelection();
+    close();
     void loadVillage(v, true);
   };
 
@@ -138,8 +149,11 @@ export default function MapApp() {
     setStatus({ text: now ? "Saved on this device" : "Removed from saved plots" }, 2500);
   };
 
+  const panelOpen = !!selected || resolving;
+  const far = engine.zoom <= 10.5;
+
   return (
-    <div className="app" data-village={engine.village?.villageId ?? ""} data-plots={engine.plotCount}>
+    <div className={`app ${panelOpen ? "has-plot" : ""}`} data-village={engine.village?.villageId ?? ""} data-plots={engine.plotCount}>
       <div ref={container} className="map" aria-label="Map of Odisha with plot boundaries" role="application" />
 
       <header className="topbar">
@@ -154,15 +168,23 @@ export default function MapApp() {
         </nav>
       </header>
 
+      {panelOpen ? (
+        <LandPanel plot={selected} resolving={resolving} isSaved={isSaved} onSave={toggleSave} onShare={share} onClose={close} />
+      ) : (
+        <LandingPanel onDistrict={onDistrict} onBrowse={() => setPicker(true)} onLocate={locate} />
+      )}
+
       {status && (
         <div className={`status status--${status.tone ?? "info"}`} role="status" aria-live="polite">
           {status.busy && <span className="spinner" aria-hidden="true" />}
           {status.text}
         </div>
       )}
-
-      {!selected && ready && !status && (
-        <p className="hint"><Icon name="plot" size={16} /> Search a village, or zoom in and tap any plot</p>
+      {!status && ready && !panelOpen && engine.hoverDistrict && far && (
+        <div className="status status--district" aria-hidden="true">{engine.hoverDistrict.name} · tap to explore</div>
+      )}
+      {!status && ready && !panelOpen && !engine.hoverDistrict && (
+        <p className="hint">{far ? "Tap a district to explore its plots" : engine.zoom < 13.5 ? "Zoom in on fields or houses" : "Tap any plot to see its land details"}</p>
       )}
 
       <MapControls
@@ -176,10 +198,6 @@ export default function MapApp() {
         onZoom={(d) => (d > 0 ? map.current?.zoomIn() : map.current?.zoomOut())}
       />
 
-      {selected && !details && (
-        <PlotCard plot={selected} isSaved={isSaved} onDetails={() => setDetails(true)} onSave={toggleSave} onShare={share} onClose={clearSelection} />
-      )}
-      {selected && details && <LandDetailsSheet plot={selected} onClose={() => setDetails(false)} />}
       {picker && <VillagePicker onClose={() => setPicker(false)} onPick={onVillage} />}
       {about && <AboutPanel onClose={() => setAbout(false)} />}
     </div>
