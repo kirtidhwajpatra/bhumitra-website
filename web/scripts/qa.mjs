@@ -19,7 +19,7 @@ const step = async (name, fn) => {
     const note = await fn();
     results.push(`PASS ${name} (${((Date.now() - t) / 1000).toFixed(1)}s)${note ? ` - ${note}` : ""}`);
   } catch (e) {
-    results.push(`FAIL ${name}: ${String(e.message).split("\n")[0]}`);
+    results.push(`FAIL ${name}: ${String(e.message).split("\n").slice(0, process.env.QA_VERBOSE ? 20 : 1).join("\n")}`);
   }
 };
 
@@ -70,6 +70,39 @@ async function run(label, viewport, mobile) {
   await step(`${label}: close returns to landing`, async () => {
     await page.click('.panel__actions button[aria-label="Close"]');
     await page.waitForSelector(".panel--landing", { timeout: 4000 });
+  });
+
+  await step(`${label}: landing card hides and comes back`, async () => {
+    await page.click(".landing__collapse");
+    await page.waitForSelector(".panel-tab", { timeout: 3000 });
+    if (await page.locator(".panel--landing").count()) throw new Error("panel still visible");
+    await page.screenshot({ path: `${OUT}${label}-4-collapsed.png` });
+    await page.click(".panel-tab");
+    await page.waitForSelector(".panel--landing", { timeout: 3000 });
+  });
+
+  await step(`${label}: dark mode toggles and is remembered`, async () => {
+    await page.click(".theme-btn");
+    const t = await page.evaluate(() => document.documentElement.dataset.theme);
+    if (t !== "dark") throw new Error(`theme is ${t}`);
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await page.waitForSelector(".panel--landing h1");
+    const t2 = await page.evaluate(() => document.documentElement.dataset.theme);
+    if (t2 !== "dark") throw new Error(`after reload theme is ${t2}`);
+    await page.waitForTimeout(2500);
+    await page.screenshot({ path: `${OUT}${label}-5-dark.png` });
+    await page.evaluate(() => {
+      const map = document.querySelector(".map");
+      return map;
+    });
+  });
+
+  await step(`${label}: dark land panel`, async () => {
+    await page.click('button[aria-label="Go to my location"]');
+    await page.waitForSelector(".panel__hero h2", { timeout: 30000 });
+    await page.waitForFunction(() => !document.querySelector(".psec.is-loading"), null, { timeout: 60000 });
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: `${OUT}${label}-6-dark-panel.png` });
   });
 
   if (errors.length) results.push(`WARN ${label}: page errors: ${errors.slice(0, 3).join(" | ")}`);

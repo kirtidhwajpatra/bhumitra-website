@@ -1,13 +1,14 @@
 ---
 import MapApp from "../components/map/MapApp";
 import { FAQS } from "../components/panel/LandingPanel";
+import { THEME_BOOT } from "../lib/theme";
 import "../styles/tokens.css";
 import "../styles/app.css";
 import "../styles/panel.css";
 
 const title = "Bhumitra: Odisha plot map & land records (Bhulekh RoR)";
 const description =
-  "See every plot in any Odisha village on a satellite map. Tap a plot for its owners, khata, area, kisam, government land value and registration cost from Bhulekh and IGR Odisha. Free daily searches.";
+  "See every plot in any Odisha village on a satellite map. Tap a plot for its owners, khata, area, kisam, government land value and registration cost from Bhulekh and IGR Odisha. Free, no sign-in.";
 const site = "https://getbhumitra.in";
 
 const ld = {
@@ -34,6 +35,7 @@ const ld = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline set:html={THEME_BOOT} />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={`${site}/`} />

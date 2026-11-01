@@ -2,7 +2,7 @@
 .panel {
   position: absolute; z-index: 6; top: calc(max(12px, env(safe-area-inset-top)) + 64px); left: 12px; bottom: 12px;
   width: 420px; display: flex; flex-direction: column; overflow: hidden;
-  border-radius: var(--radius-lg); background: rgba(255, 255, 255, 0.96);
+  border-radius: var(--radius-lg); background: var(--panel);
   backdrop-filter: blur(22px) saturate(1.6); -webkit-backdrop-filter: blur(22px) saturate(1.6);
   box-shadow: var(--shadow-lg); animation: panel-in .32s var(--ease);
 }
@@ -11,7 +11,7 @@
 .panel__progress { position: absolute; top: 0; left: 0; right: 0; height: 3px; overflow: hidden; z-index: 2; }
 .panel__progress::after { content: ""; position: absolute; inset: 0; width: 40%; background: linear-gradient(90deg, transparent, var(--emerald), var(--lime), transparent); animation: progress 1.2s ease-in-out infinite; }
 @keyframes progress { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
-.panel__head { padding: 18px 18px 14px; border-bottom: 1px solid var(--line); background: #fff; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; }
+.panel__head { padding: 18px 18px 14px; border-bottom: 1px solid var(--line); background: var(--card); display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; }
 .panel__hero { display: flex; align-items: center; gap: 12px; }
 .panel__hero p { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
 .panel__hero h2 { margin: 0; font-size: 32px; line-height: 1.05; letter-spacing: -.03em; }
@@ -28,12 +28,12 @@
 .panel__source a { color: var(--text-2); }
 
 /* Sections */
-.psec { margin-top: 10px; padding: 14px; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); animation: sec-in .35s var(--ease) both; }
+.psec { margin-top: 10px; padding: 14px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--line); animation: sec-in .35s var(--ease) both; }
 .psec:nth-child(2) { animation-delay: .04s; } .psec:nth-child(3) { animation-delay: .08s; } .psec:nth-child(4) { animation-delay: .12s; } .psec:nth-child(5) { animation-delay: .16s; }
 @keyframes sec-in { from { opacity: 0; transform: translateY(8px); } }
 .psec__head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 .psec__head h3 { margin: 0; font-size: 16px; letter-spacing: -.01em; }
-.psec__ico { width: 30px; height: 30px; border-radius: 9px; background: #E6F4EC; color: var(--emerald); display: grid; place-items: center; flex: none; }
+.psec__ico { width: 30px; height: 30px; border-radius: 9px; background: var(--tint); color: var(--emerald); display: grid; place-items: center; flex: none; }
 .psec__status { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--text-2); }
 .psec__count { margin-left: auto; min-width: 26px; padding: 2px 8px; border-radius: 999px; background: var(--forest); color: var(--lime); font-size: 12.5px; font-weight: 700; text-align: center; }
 .psec__empty { margin: 0; color: var(--text-2); font-size: 14.5px; }
@@ -86,7 +86,7 @@
 .pvalue strong { display: block; font-size: 28px; letter-spacing: -.02em; line-height: 1.15; }
 .pvalue span { font-size: 13px; color: rgba(255,255,255,.75); }
 .office p { margin: 0 0 10px; font-size: 14px; color: var(--text-2); }
-.office select { width: 100%; height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; font: 500 14.5px var(--font); color: var(--ink); }
+.office select { width: 100%; height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); font: 500 14.5px var(--font); color: var(--ink); }
 .calc, .sales { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
 .calc h4, .sales h4 { margin: 0 0 10px; font-size: 15px; }
 .calc__field { display: grid; gap: 4px; font-size: 12.5px; color: var(--text-3); }
@@ -94,7 +94,7 @@
 .calc__field input:focus { outline: 2px solid var(--lime); border-color: var(--emerald); }
 .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 10px 0; padding: 4px; border-radius: 12px; background: var(--surface-2); }
 .seg button { height: 34px; border: 0; border-radius: 9px; background: transparent; font-weight: 600; font-size: 14px; cursor: pointer; color: var(--text-2); }
-.seg button.is-on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.seg button.is-on { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 .calc__out { margin: 0; display: grid; gap: 8px; }
 .calc__out div { display: flex; justify-content: space-between; font-size: 14.5px; }
 .calc__out dt { color: var(--text-2); }
@@ -117,7 +117,7 @@
 .landing__steps b { font-size: 15px; }
 .landing__steps span { color: var(--text-2); font-size: 14px; }
 .landing__chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: #fff; font-size: 13.5px; font-weight: 500; cursor: pointer; }
+.chip { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); font-size: 13.5px; font-weight: 500; cursor: pointer; }
 .chip:hover { border-color: var(--emerald); color: var(--emerald); }
 .landing__guides { list-style: none; padding: 0; margin: 0; }
 .landing__guides a { display: block; padding: 10px 0; border-bottom: 1px solid var(--line); text-decoration: none; font-weight: 500; font-size: 14.5px; }
@@ -130,6 +130,22 @@
 .landing__app p { margin: 0 0 12px; color: var(--text-2); font-size: 14px; }
 
 .status--district { background: var(--forest); color: var(--lime); }
+
+/* Collapse button on the landing card, and the tab that brings it back */
+.landing__collapse { position: absolute; z-index: 3; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; border: 0; display: grid; place-items: center; background: rgba(255, 255, 255, 0.14); color: #fff; cursor: pointer; transition: background .2s, transform .15s var(--ease); }
+.landing__collapse:hover { background: rgba(255, 255, 255, 0.26); }
+.landing__collapse:active { transform: scale(.94); }
+.landing__hero { position: relative; padding-right: 56px; }
+.panel-tab { position: absolute; z-index: 6; top: calc(max(12px, env(safe-area-inset-top)) + 64px); left: 12px; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px 0 12px; border: 0; border-radius: 999px; background: var(--forest); color: var(--lime); font-weight: 600; font-size: 14.5px; box-shadow: var(--shadow); cursor: pointer; animation: pill-in .25s var(--ease); }
+.panel-tab:hover { background: #0b3d2a; }
+
+/* Light / dark switch */
+.theme-btn { width: 40px; height: 40px; border-radius: 50%; border: 0; display: grid; place-items: center; background: transparent; color: var(--text-2); cursor: pointer; transition: background .2s, color .2s; }
+.theme-btn:hover { background: var(--surface-2); color: var(--ink); }
+:root[data-theme="dark"] .landing__hero { background: radial-gradient(130% 150% at 100% 0%, #0d3b2a 0%, #050f0b 70%); }
+:root[data-theme="dark"] .panel-tab { background: var(--card); color: var(--emerald); }
+:root[data-theme="dark"] .pvalue { background: radial-gradient(120% 140% at 100% 0%, #0d3b2a 0%, #07130e 70%); }
+:root[data-theme="dark"] .panel__badge, :root[data-theme="dark"] .psec__count { background: rgba(0, 217, 149, 0.16); color: var(--emerald); }
 
 /* Map chrome moves right of the panel on desktop */
 @media (min-width: 761px) {
@@ -148,6 +164,9 @@
   .panel--landing .panel__grab::before { background: rgba(255,255,255,.4); }
   .panel__head { padding-top: 22px; }
   .landing__hero { padding-top: 26px; }
+  .landing__collapse { top: 16px; }
+  .panel-tab { top: auto; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .topbar__links a[href="/blog/"] { display: none; }
   .landing__hero h1 { font-size: 22px; }
   .landing__hero > p { display: none; }
   .panel--landing.is-expanded .landing__hero > p { display: block; }

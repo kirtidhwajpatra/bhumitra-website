@@ -11,6 +11,8 @@ const BACKEND = process.env.BHUMITRA_API_ORIGIN || "https://api.prettyplot.in";
 export default defineConfig({
   site: "https://getbhumitra.in",
   integrations: [react()],
+  // The dev toolbar sits at the bottom centre, over the phone "Explore Odisha" tab.
+  devToolbar: { enabled: false },
   vite: {
     server: {
       proxy: {

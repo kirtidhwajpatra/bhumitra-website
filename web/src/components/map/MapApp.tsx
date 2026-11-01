@@ -4,6 +4,8 @@ import type { MapMouseEvent } from "maplibre-gl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../../lib/api";
 import { plotKey, recents, saved, toStored, type StoredPlot } from "../../lib/storage";
+import { currentTheme, setTheme, type Theme } from "../../lib/theme";
+import { Icon } from "../Icon";
 import type { SearchResult, VillageContext } from "../../lib/types";
 import { LandPanel } from "../panel/LandPanel";
 import { LandingPanel } from "../panel/LandingPanel";
@@ -33,6 +35,17 @@ export default function MapApp() {
   const [picker, setPicker] = useState(false);
   const [about, setAbout] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [theme, setThemeState] = useState<Theme>("light");
+  // The landing card can be tucked away; remembered on this device.
+  const [landingOpen, setLandingOpenState] = useState(true);
+  const setLandingOpen = (open: boolean) => {
+    setLandingOpenState(open);
+    try { localStorage.setItem("bhumitra.landingOpen.v1", open ? "1" : "0"); } catch { /* blocked */ }
+  };
+  useEffect(() => {
+    setThemeState(currentTheme());
+    try { if (localStorage.getItem("bhumitra.landingOpen.v1") === "0") setLandingOpenState(false); } catch { /* blocked */ }
+  }, []);
 
   const pick = useCallback(async (lng: number, lat: number) => {
     tapPoint.current = [lng, lat];
@@ -164,14 +177,27 @@ export default function MapApp() {
         <SearchBar onPlace={onPlace} onRecent={onRecent} onBrowse={() => setPicker(true)} />
         <nav className="topbar__links" aria-label="Site">
           <a href="/blog/">Guides</a>
-          <a className="btn btn--primary btn--sm" href="#get-app">Get the app</a>
+          <button
+            className="theme-btn"
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            title={theme === "dark" ? "Light mode" : "Dark mode"}
+            onClick={() => { const t = theme === "dark" ? "light" : "dark"; setTheme(t); setThemeState(t); }}
+          >
+            <Icon name={theme === "dark" ? "sun" : "moon"} size={19} />
+          </button>
+          <a className="btn btn--primary btn--sm" href="#get-app" onClick={(e) => { e.preventDefault(); clearSelection(); setLandingOpen(true); }}>Get the app</a>
         </nav>
       </header>
 
       {panelOpen ? (
         <LandPanel plot={selected} resolving={resolving} isSaved={isSaved} onSave={toggleSave} onShare={share} onClose={close} />
+      ) : landingOpen ? (
+        <LandingPanel onDistrict={onDistrict} onBrowse={() => setPicker(true)} onLocate={locate} onCollapse={() => setLandingOpen(false)} />
       ) : (
-        <LandingPanel onDistrict={onDistrict} onBrowse={() => setPicker(true)} onLocate={locate} />
+        <button className="panel-tab" onClick={() => setLandingOpen(true)} aria-label="Show the Bhumitra panel" aria-expanded="false">
+          <Icon name="panelOpen" size={18} />
+          <span>Explore Odisha</span>
+        </button>
       )}
 
       {status && (

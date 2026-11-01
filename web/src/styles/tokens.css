@@ -25,10 +25,46 @@
   --radius-lg: 28px;
   --shadow: 0 10px 30px -12px rgba(1, 39, 26, 0.35), 0 2px 6px rgba(1, 39, 26, 0.08);
   --shadow-lg: 0 30px 60px -20px rgba(1, 39, 26, 0.45);
+  --card: #FFFFFF;
+  --panel: rgba(255, 255, 255, 0.96);
+  --tint: #E6F4EC;
+  --hover: #E7EBE8;
+  --skel-a: #EEF2EF;
+  --skel-b: #F7F9F8;
+  color-scheme: light;
   --font: "Google Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Oriya", sans-serif;
   --odia: "Noto Sans Oriya", "Kalinga", "Google Sans", sans-serif;
   --ease: cubic-bezier(.2, .8, .2, 1);
 }
+
+/* Dark appearance: the app's dark palette (#0A0A0A / #161717 surfaces, mint #00D995 accent). */
+:root[data-theme="dark"] {
+  --ink: #EDF2EE;
+  --text-2: #A8AAAA;
+  --text-3: #7A7C7C;
+  --line: #262A28;
+  --surface: #0A0A0A;
+  --surface-2: #1C1F1E;
+  --card: #161717;
+  --panel: rgba(16, 17, 17, 0.95);
+  --glass: rgba(22, 23, 23, 0.86);
+  --glass-dark: rgba(0, 0, 0, 0.78);
+  --tint: rgba(0, 217, 149, 0.16);
+  --hover: #262A28;
+  --spring: rgba(0, 217, 149, 0.18);
+  --emerald: #00D995;
+  --emerald-dark: #00B57C;
+  --skel-a: #1F2221;
+  --skel-b: #2A2E2C;
+  --warn: #F0A15E;
+  --shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 30px 60px -20px rgba(0, 0, 0, 0.8);
+  color-scheme: dark;
+}
+:root[data-theme="dark"] .btn--primary { color: #01271A; }
+:root[data-theme="dark"] .btn--primary:hover { background: #33E3AA; }
+:root[data-theme="dark"] .ctrl[aria-pressed="true"] { color: #01271A; }
+:root[data-theme="dark"] .store { background: #F2F4F3; color: #0A0A0A; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -59,7 +95,7 @@ a { color: inherit; }
 .stores--compact .store { padding: 7px 14px 7px 11px; }
 .stores--compact .store strong { font-size: 15px; }
 
-.skeleton { background: linear-gradient(90deg, #EEF2EF 0%, #F7F9F8 50%, #EEF2EF 100%); background-size: 200% 100%; animation: shimmer 1.3s linear infinite; border-radius: 10px; }
+.skeleton { background: linear-gradient(90deg, var(--skel-a) 0%, var(--skel-b) 50%, var(--skel-a) 100%); background-size: 200% 100%; animation: shimmer 1.3s linear infinite; border-radius: 10px; }
 @keyframes shimmer { to { background-position: -200% 0; } }
 
 @media (prefers-reduced-motion: reduce) {

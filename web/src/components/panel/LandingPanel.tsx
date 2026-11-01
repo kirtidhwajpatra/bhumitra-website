@@ -8,7 +8,7 @@ import { StoreButtons } from "../StoreButtons";
 export const FAQS: [string, string][] = [
   ["How do I see the plot map of my land in Odisha?", "Search your village or town, tap a district on the map, or tap locate. Zoom in and every plot appears in yellow on the satellite map. Tap a plot to open its land details."],
   ["Is this the official Bhulekh website?", "No. Bhumitra is an independent app. It shows Record of Rights data from Odisha's public Bhulekh portal (bhulekh.ori.nic.in), values from IGR Odisha and plot boundaries from the state's cadastral maps."],
-  ["Is it free?", "Yes. You get free plot searches every day on the website, the same as in the app. If you use them up, you can continue in the Bhumitra app or come back the next day."],
+  ["Is it free?", "Yes. Every plot search is free on the website and in the app: owners, khata, area, land type, government value and registration cost. You don't need to sign in."],
   ["Do I need a khata or plot number?", "No. Find the plot on the map and tap it. The plot number, khata and owners come from the record."],
   ["Is the map a legal boundary?", "No. Plot lines from cadastral maps are for reference. For an exact boundary, ask the Revenue Inspector or a licensed surveyor. For legal use, get a certified RoR from the Tahasil office."],
 ];
@@ -19,13 +19,17 @@ interface Props {
   onDistrict: (name: string) => void;
   onBrowse: () => void;
   onLocate: () => void;
+  onCollapse: () => void;
 }
 
-export function LandingPanel({ onDistrict, onBrowse, onLocate }: Props) {
+export function LandingPanel({ onDistrict, onBrowse, onLocate, onCollapse }: Props) {
   const [open, setOpen] = useState(false);
   return (
     <aside className={`panel panel--landing ${open ? "is-expanded" : ""}`} aria-label="About Bhumitra">
       <button className="panel__grab" aria-label={open ? "Collapse" : "Expand"} onClick={() => setOpen(!open)} />
+      <button className="landing__collapse" onClick={onCollapse} aria-label="Hide this panel" title="Hide panel">
+        <Icon name="panelClose" size={18} />
+      </button>
       <div className="landing__hero">
         <p className="landing__kicker"><Icon name="pin" size={14} /> Odisha land records</p>
         <h1>Every plot in Odisha, on one map.</h1>
@@ -70,7 +74,7 @@ export function LandingPanel({ onDistrict, onBrowse, onLocate }: Props) {
 
         <section className="landing__block landing__app" id="get-app">
           <h2>Get the Bhumitra app</h2>
-          <p>Saved plots, land reports you can share, and unlimited searches.</p>
+          <p>Plots near you, saved plots and land reports you can share, on your phone. Free.</p>
           <StoreButtons compact />
         </section>
 
