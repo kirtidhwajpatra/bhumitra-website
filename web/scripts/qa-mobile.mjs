@@ -34,7 +34,9 @@ async function layout(page, label) {
       pill: vis(document.querySelector(".status, .hint")),
     };
     const overlap = (a, b) => a && b && a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1;
-    for (const [a, b] of [["controls", "sheet"], ["controls", "pill"], ["controls", "tab"], ["pill", "sheet"], ["search", "theme"], ["brand", "search"]]) {
+    // A full-height sheet shows short messages ("Saved", "Link copied") on top of itself on purpose.
+    const full = !!document.querySelector(".panel.is-expanded");
+    for (const [a, b] of [["controls", "sheet"], ["controls", "pill"], ["controls", "tab"], ...(full ? [] : [["pill", "sheet"]]), ["search", "theme"], ["brand", "search"]]) {
       if (overlap(boxes[a], boxes[b])) out.push(`${a} overlaps ${b}`);
     }
     for (const [k, r] of Object.entries(boxes)) if (r && (r.left < -1 || r.right > W + 1 || r.bottom > H + 1)) out.push(`${k} off screen`);

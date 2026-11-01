@@ -30,6 +30,9 @@
   .ctrl { width: 44px; height: 44px; }
   .ctrl--wide { display: none; }
   .app.has-plot .controls { display: none; }
+  /* With a full-height sheet, messages ("Saved", "Link copied") show at the bottom, over it */
+  .app:has(.panel.is-expanded) .status { top: auto; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 8; }
+  .app:has(.panel.is-expanded) .hint { display: none; }
   /* A sheet pulled up to full height covers the map, so its buttons and credit go away */
   .app:has(.panel.is-expanded) .controls, .app:has(.panel.is-expanded) .maplibregl-ctrl-bottom-right { display: none; }
   /* Map credit: bottom-left above the sheet, folded into its (i) button */
@@ -111,5 +114,5 @@
 
 /* Short phones: the half sheet would hide most of the map */
 @media (max-width: 760px) and (max-height: 680px) {
-  .panel { height: 56svh; }
+  .panel:not(.panel--landing):not(.is-expanded) { height: 56svh; }
 }

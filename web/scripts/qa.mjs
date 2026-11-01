@@ -90,8 +90,13 @@ async function run(label, viewport, mobile) {
 
   await step(`${label}: tapping another plot switches the panel`, async () => {
     const before = await page.textContent(".pov__id h2");
+    if (mobile && (await page.locator(".panel--plot.is-expanded").count())) {
+      await page.locator(".panel__body").evaluate((el) => el.scrollTo(0, 0));
+      await page.click(".panel--plot .panel__grab"); // a full-height sheet covers the map
+    }
+    await page.waitForTimeout(1500); // let the camera finish framing the plot
     const box = await page.locator(".map").boundingBox();
-    await page.mouse.click(box.x + box.width * (mobile ? 0.5 : 0.7), box.y + box.height * (mobile ? 0.2 : 0.18));
+    await page.mouse.click(box.x + box.width * (mobile ? 0.4 : 0.7), box.y + box.height * (mobile ? 0.4 : 0.18));
     await page.waitForFunction((b) => document.querySelector(".pov__id h2")?.textContent !== b, before, { timeout: 20000 });
     return `now plot ${await page.textContent(".pov__id h2")}`;
   });

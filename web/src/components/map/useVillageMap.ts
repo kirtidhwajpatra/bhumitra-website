@@ -190,9 +190,16 @@ export function useVillageMap(container: React.RefObject<HTMLDivElement | null>)
 
     map.on("load", () => {
       setReady(true);
-      // Phones: start with the map credit folded into its (i) button so it covers nothing.
+      // Phones: keep the map credit folded into its (i) button so it covers nothing,
+      // until the user taps (i). MapLibre unfolds it again on every resize.
       if (window.matchMedia("(max-width: 760px)").matches) {
-        container.current?.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show");
+        const attrib = container.current?.querySelector(".maplibregl-ctrl-attrib");
+        let userOpened = false;
+        attrib?.querySelector(".maplibregl-ctrl-attrib-button")?.addEventListener("click", () => { userOpened = true; });
+        const fold = () => { if (!userOpened) attrib?.classList.remove("maplibregl-compact-show"); };
+        fold();
+        map.on("resize", () => requestAnimationFrame(fold));
+        map.once("idle", fold);
       }
       void installDistricts(map, setHoverDistrict, () => setHoverDistrict(null));
     });

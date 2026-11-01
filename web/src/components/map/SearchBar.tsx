@@ -123,7 +123,6 @@ export function SearchBar({ onPlace, onRecent, onBrowse, onOpenChange }: Props) 
                       villageName: p.villageName,
                       tahasilName: p.tahasilName,
                       districtName: p.districtName,
-                      areaAcre: p.areaAcre,
                     });
                     onRecent(p);
                   }}
