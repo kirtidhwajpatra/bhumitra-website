@@ -1,5 +1,6 @@
 // Top search bar: places from /location/search, recent plots, and a link to browse villages.
 import { useEffect, useRef, useState } from "react";
+import { analytics } from "../../lib/analytics";
 import { api } from "../../lib/api";
 import { recents, type StoredPlot } from "../../lib/storage";
 import type { SearchResult } from "../../lib/types";
@@ -9,9 +10,10 @@ interface Props {
   onPlace: (r: SearchResult) => void;
   onRecent: (p: StoredPlot) => void;
   onBrowse: () => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function SearchBar({ onPlace, onRecent, onBrowse }: Props) {
+export function SearchBar({ onPlace, onRecent, onBrowse, onOpenChange }: Props) {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -19,6 +21,9 @@ export function SearchBar({ onPlace, onRecent, onBrowse }: Props) {
   const [active, setActive] = useState(-1);
   const [recentList, setRecentList] = useState<StoredPlot[]>([]);
   const wrap = useRef<HTMLDivElement>(null);
+  const [short, setShort] = useState(false);
+  useEffect(() => setShort(window.matchMedia("(max-width: 760px)").matches), []);
+  useEffect(() => onOpenChange?.(open), [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const term = q.trim();
@@ -53,6 +58,12 @@ export function SearchBar({ onPlace, onRecent, onBrowse }: Props) {
   const choose = (r: SearchResult) => {
     setQ(r.title);
     setOpen(false);
+    analytics.landSearchSubmitted(r.title);
+    analytics.villageSelected({
+      villageName: r.title,
+      districtName: r.subtitle,
+      villageId: r.id,
+    });
     onPlace(r);
   };
 
@@ -72,7 +83,8 @@ export function SearchBar({ onPlace, onRecent, onBrowse }: Props) {
         <input
           type="search"
           value={q}
-          placeholder="Search village, area or town in Odisha"
+          placeholder={short ? "Search village or town" : "Search village, area or town in Odisha"}
+          enterKeyHint="search"
           aria-label="Search village, area or town in Odisha"
           aria-expanded={open}
           aria-controls="search-results"
@@ -82,6 +94,11 @@ export function SearchBar({ onPlace, onRecent, onBrowse }: Props) {
           onChange={(e) => { setQ(e.target.value); setActive(-1); setOpen(true); }}
           onKeyDown={onKey}
         />
+        {open && !q && (
+          <button className="search__clear search__cancel" aria-label="Close search" onClick={() => setOpen(false)}>
+            <Icon name="close" size={16} />
+          </button>
+        )}
         {q && (
           <button className="search__clear" aria-label="Clear search" onClick={() => { setQ(""); setResults([]); }}>
             <Icon name="close" size={16} />
@@ -95,7 +112,22 @@ export function SearchBar({ onPlace, onRecent, onBrowse }: Props) {
             <>
               <p className="search__label">Recent plots</p>
               {recentList.map((p) => (
-                <button key={p.key} className="search__row" role="option" onClick={() => { setOpen(false); onRecent(p); }}>
+                <button
+                  key={p.key}
+                  className="search__row"
+                  role="option"
+                  onClick={() => {
+                    setOpen(false);
+                    analytics.plotTapped({
+                      plotNo: p.plotNumber,
+                      villageName: p.villageName,
+                      tahasilName: p.tahasilName,
+                      districtName: p.districtName,
+                      areaAcre: p.areaAcre,
+                    });
+                    onRecent(p);
+                  }}
+                >
                   <span className="search__ico"><Icon name="history" size={18} /></span>
                   <span><b>Plot {p.plotNumber}</b><small>{p.villageName}, {p.tahasilName}</small></span>
                 </button>

@@ -14,7 +14,7 @@ export function AboutPanel({ onClose }: { onClose: () => void }) {
           <li><Icon name="khata" size={18} /> Khata, area and land type from the Record of Rights</li>
           <li><Icon name="owner" size={18} /> Owner names, land value and registration cost in the app</li>
         </ul>
-        <StoreButtons />
+        <StoreButtons source="about_panel" />
         <p className="about__fine">Bhumitra is an independent app, not affiliated with the Government of Odisha. Maps and records are for information only.</p>
       </section>
     </div>

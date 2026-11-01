@@ -63,25 +63,3 @@
 @media (min-width: 761px) {
   .app .status, .app .hint { left: calc(50% + 216px); }
 }
-
-/* Phones: panel becomes a bottom sheet */
-@media (max-width: 760px) {
-  .panel { top: auto; left: 0; right: 0; bottom: 0; width: 100%; height: 52svh; border-radius: 24px 24px 0 0; animation: sheet-in .34s var(--ease); transition: height .3s var(--ease); }
-  .panel.is-expanded { height: 90svh; }
-  .panel--landing { height: 210px; }
-  .panel--landing.is-expanded { height: 86svh; }
-  @keyframes sheet-in { from { transform: translateY(40px); opacity: 0; } }
-  .panel__grab { display: block; position: absolute; z-index: 3; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 22px; border: 0; background: none; cursor: pointer; }
-  .panel__grab::before { content: ""; position: absolute; left: 40px; right: 40px; top: 8px; height: 5px; border-radius: 3px; background: var(--line); }
-  .panel--landing .panel__grab::before { background: rgba(255,255,255,.4); }
-  .landing__hero { padding-top: 26px; }
-  .landing__collapse { top: 16px; }
-  .panel-tab { top: auto; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom)); }
-  .topbar__links a[href="/blog/"] { display: none; }
-  .landing__hero h1 { font-size: 22px; }
-  .landing__hero > p { display: none; }
-  .panel--landing.is-expanded .landing__hero > p { display: block; }
-  .app.has-plot .controls, .app .controls { bottom: auto; top: calc(max(12px, env(safe-area-inset-top)) + 70px); }
-  .app .status, .app .hint { top: auto; bottom: calc(222px + env(safe-area-inset-bottom)); }
-  .app.has-plot .status, .app.has-plot .hint { bottom: calc(52svh + 10px); }
-}

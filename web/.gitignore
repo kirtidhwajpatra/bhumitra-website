@@ -5,3 +5,5 @@ dist/
 .astro-dev.log
 .astro-dev.pid
 .env
+.env.*
+!.env.example

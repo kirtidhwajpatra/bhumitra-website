@@ -128,8 +128,3 @@
 
 .panel--plot .panel__body { padding: 0 0 20px; }
 .panel--plot .panel__source { margin: 18px 20px 0; }
-
-@media (max-width: 760px) {
-  .panel--plot .pov { padding-top: 24px; }
-  .rrow__label, .rselect > span { width: 116px; }
-}

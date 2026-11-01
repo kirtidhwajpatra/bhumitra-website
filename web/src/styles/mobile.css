@@ -1,0 +1,115 @@
+/* Phone layout, like the iOS app: one row on top (logo, search, theme), map buttons
+   bottom-right just above the sheet, and a bottom sheet that is small until you pull it up. */
+
+/* Desktop never shows these phone-only bits */
+.landing__more, .search__cancel { display: none; }
+.linkbtn--inline { display: inline; margin: 0; padding: 0; font: inherit; color: var(--text-2); text-decoration: underline; }
+
+@media (max-width: 760px) {
+  /* Top bar */
+  .topbar { top: max(10px, env(safe-area-inset-top)); left: 10px; right: 10px; gap: 8px; align-items: center; }
+  .brand { flex: none; width: 48px; height: 48px; padding: 0; justify-content: center; }
+  .brand span { display: none; }
+  .brand img { width: 34px; height: 34px; }
+  .search { flex: 1 1 auto; min-width: 0; }
+  .search__box { height: 48px; padding: 0 6px 0 14px; gap: 8px; }
+  .search__box input { font-size: 16px; } /* 16px keeps iOS Safari from zooming in */
+  .search__panel { top: 48px; max-height: calc(100svh - 150px); }
+  .search__cancel { display: grid; }
+  .topbar__links { flex: none; width: 48px; height: 48px; padding: 0; gap: 0; justify-content: center; margin-left: 0; }
+  .topbar__links a:not(.btn), .topbar__app { display: none; }
+  .theme-btn { width: 48px; height: 48px; }
+  /* While searching, the search box takes the whole row */
+  .topbar.is-searching .brand, .topbar.is-searching .topbar__links { display: none; }
+
+  /* Status and hints sit just under the top bar, out of the way of the map */
+  .status, .hint, .app.has-plot .status, .app.has-plot .hint { top: calc(max(10px, env(safe-area-inset-top)) + 58px); bottom: auto; max-width: calc(100% - 24px); padding: 8px 14px; font-size: 13.5px; }
+
+  /* Map buttons: bottom-right, just above the sheet; only what a phone needs (pinch to zoom) */
+  .controls, .app.has-plot .controls { top: auto; right: 10px; bottom: calc(var(--sheet-h, 0px) + 12px); gap: 8px; transition: bottom .3s var(--ease); }
+  .ctrl { width: 44px; height: 44px; }
+  .ctrl--wide { display: none; }
+  .app.has-plot .controls { display: none; }
+  /* A sheet pulled up to full height covers the map, so its buttons and credit go away */
+  .app:has(.panel.is-expanded) .controls, .app:has(.panel.is-expanded) .maplibregl-ctrl-bottom-right { display: none; }
+  /* Map credit: bottom-left above the sheet, folded into its (i) button */
+  .maplibregl-ctrl-bottom-right { right: auto; left: 0; bottom: var(--sheet-h, 0px); transition: bottom .3s var(--ease); }
+  .maplibregl-ctrl-bottom-right .maplibregl-ctrl { margin: 0 0 8px 10px; }
+  .maplibregl-ctrl-attrib.maplibregl-compact { max-width: calc(100vw - 80px); }
+  .maplibregl-ctrl-attrib.maplibregl-compact .maplibregl-ctrl-attrib-button { right: auto; left: 0; }
+  .maplibregl-ctrl-attrib.maplibregl-compact-show { padding: 2px 8px 2px 28px; }
+
+  /* Bottom sheet */
+  .panel { top: auto; left: 0; right: 0; bottom: 0; width: 100%; height: 52svh; border-radius: 24px 24px 0 0; animation: sheet-in .34s var(--ease); transition: height .3s var(--ease); }
+  .panel.is-expanded { height: calc(100svh - max(10px, env(safe-area-inset-top)) - 64px); }
+  @keyframes sheet-in { from { transform: translateY(40px); opacity: 0; } }
+  .panel__grab { display: block; position: absolute; z-index: 3; top: 0; left: 50%; transform: translateX(-50%); width: 160px; height: 26px; border: 0; background: none; cursor: pointer; touch-action: none; }
+  .panel__grab::before { content: ""; position: absolute; left: 60px; right: 60px; top: 9px; height: 5px; border-radius: 3px; background: var(--line); }
+  .panel--landing .panel__grab::before { background: rgba(255, 255, 255, .4); }
+
+  /* Landing sheet: small by default (title + two buttons), pull up for the rest */
+  .panel--landing { height: auto; }
+  .panel--landing .panel__body { display: none; }
+  .panel--landing.is-expanded .panel__body { display: block; }
+  .landing__hero { padding: 26px 64px 10px 18px; padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
+  .panel--landing.is-expanded .landing__hero { padding-bottom: 14px; }
+  .landing__collapse { top: 16px; right: 12px; }
+  .landing__kicker { margin-bottom: 6px; font-size: 11.5px; }
+  .landing__hero h1 { margin-bottom: 12px; font-size: 21px; }
+  .landing__hero > p:not(.landing__kicker) { display: none; }
+  .landing__kicker { display: none; }
+  .panel--landing.is-expanded .landing__kicker { display: inline-flex; }
+  .panel--landing.is-expanded .landing__hero > p:not(.landing__kicker) { display: block; font-size: 14px; }
+  .landing__cta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-right: -46px; }
+  .landing__cta .btn { width: 100%; padding: 12px 8px; font-size: 14.5px; white-space: nowrap; }
+  .landing__more { display: flex; align-items: center; justify-content: center; gap: 6px; width: calc(100% + 46px); margin-top: 6px; padding: 8px 0; border: 0; background: none; color: rgba(255, 255, 255, .78); font: 600 13.5px var(--font); cursor: pointer; }
+  .landing__more svg { transition: transform .2s var(--ease); }
+  .landing__more[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .panel--landing .panel__body { padding: 4px 16px calc(20px + env(safe-area-inset-bottom)); }
+  .landing__block { padding: 14px 0 4px; }
+  .chip { padding: 9px 13px; font-size: 14px; }
+  .landing__guides a { padding: 12px 0; }
+  .landing__block summary { padding: 13px 0; }
+
+  /* "Explore Odisha" tab when the landing sheet is hidden */
+  .panel-tab { top: auto; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom)); height: 46px; }
+
+  /* Land record sheet */
+  .panel--plot .pov { padding: 26px 16px 14px; }
+  .pov__id h2 { font-size: 22px; }
+  .pov__actions { gap: 6px; }
+  .rsec__head { padding: 14px 16px; }
+  .rsec__body { padding: 0 16px; }
+  .rrow__label, .rselect > span { width: 112px; font-size: 14px; }
+  .rrow__value { font-size: 14px; }
+  .rselect { flex-wrap: wrap; }
+  .rselect select { height: 44px; font-size: 16px; }
+  .panel--plot .panel__body { padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .panel--plot .panel__source { margin: 16px 16px 0; }
+  .calc__field input { font-size: 16px; }
+
+  /* Village picker and About come up as sheets */
+  .sheet-backdrop { align-items: flex-end; }
+  .details, .picker { width: 100%; height: 92svh; border-radius: 24px 24px 0 0; animation: sheet-up .34s var(--ease); }
+  .picker__filter input { font-size: 16px; }
+  .about { margin: auto 0 0; width: 100%; max-height: 92svh; overflow: auto; border-radius: 24px 24px 0 0; padding: 24px 20px calc(24px + env(safe-area-inset-bottom)); animation: sheet-up .34s var(--ease); }
+  @keyframes sheet-up { from { transform: translateY(40px); opacity: 0; } }
+}
+
+/* Small phones (iPhone SE, 360px Androids) */
+@media (max-width: 380px) {
+  .topbar { gap: 6px; }
+  .brand, .topbar__links, .theme-btn { width: 44px; height: 44px; }
+  .search__box { height: 44px; }
+  .search__panel { top: 44px; }
+  .landing__hero h1 { font-size: 19px; }
+  .landing__cta .btn { padding: 11px 6px; font-size: 13.5px; gap: 6px; }
+  .pmetric b { font-size: 15px; }
+  .pmetric + .pmetric { padding-left: 10px; margin-left: 10px; }
+  .rrow__label, .rselect > span { width: 100px; }
+}
+
+/* Short phones: the half sheet would hide most of the map */
+@media (max-width: 760px) and (max-height: 680px) {
+  .panel { height: 56svh; }
+}

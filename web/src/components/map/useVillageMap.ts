@@ -190,6 +190,10 @@ export function useVillageMap(container: React.RefObject<HTMLDivElement | null>)
 
     map.on("load", () => {
       setReady(true);
+      // Phones: start with the map credit folded into its (i) button so it covers nothing.
+      if (window.matchMedia("(max-width: 760px)").matches) {
+        container.current?.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show");
+      }
       void installDistricts(map, setHoverDistrict, () => setHoverDistrict(null));
     });
     map.on("zoomend", () => setZoom(map.getZoom()));

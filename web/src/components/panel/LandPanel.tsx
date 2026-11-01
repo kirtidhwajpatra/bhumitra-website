@@ -1,7 +1,8 @@
 // Land details panel, laid out like the iOS plot sheet (PlotDetailSheet + LandRecordReportView):
 // a compact overview (plot, area · land type · khatian, owners, govt value), then collapsible
 // sections separated by hairlines. Desktop: left side panel. Phone: bottom sheet.
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { analytics } from "../../lib/analytics";
 import { inrShort } from "../../lib/format";
 import { areaPrimary, isGovernmentLand, parseAreaSqM, parseOwner } from "../../lib/land";
 import type { SelectedPlot } from "../../lib/types";
@@ -9,6 +10,7 @@ import { Icon } from "../Icon";
 import { useLandRecord } from "../map/useLandRecord";
 import { LandSection, LocationSection, OwnersSection, RemarksSection, type SectionId } from "./RecordSections";
 import { SalesSection, ValueSection, benchmarkFor } from "./ValueSections";
+import { isPhone, useSwipe } from "./useSwipe";
 
 interface Props {
   plot: SelectedPlot | null;
@@ -27,11 +29,23 @@ export function LandPanel({ plot, resolving, isSaved, onSave, onShare, onClose }
   // Sections start collapsed, like the app; what you open stays open from plot to plot.
   const [open, setOpen] = useState<Set<SectionId>>(() => new Set());
   const isOpen = useCallback((id: SectionId) => open.has(id), [open]);
-  const toggle = useCallback((id: SectionId) => setOpen((s) => {
-    const n = new Set(s);
-    n.has(id) ? n.delete(id) : n.add(id);
-    return n;
-  }), []);
+  const toggle = useCallback((id: SectionId) => {
+    setOpen((s) => {
+      const n = new Set(s);
+      const willOpen = !n.has(id);
+      if (n.has(id)) n.delete(id);
+      else {
+        n.add(id);
+        // On a phone, opening a section grows the half-height sheet so it can be read.
+        if (isPhone()) setExpanded(true);
+      }
+      analytics.sectionToggled(id, willOpen);
+      return n;
+    });
+  }, []);
+  const bodyRef = useRef<HTMLDivElement>(null);
+  // Swipe down only shrinks the sheet when the record is scrolled to the top, so it never fights scrolling.
+  const swipe = useSwipe(() => setExpanded(true), () => { if ((bodyRef.current?.scrollTop ?? 0) <= 0) setExpanded(false); });
   const allOpen = ALL.slice(0, 5).every((id) => open.has(id));
 
   const ready = !!plot && !resolving;
@@ -40,13 +54,29 @@ export function LandPanel({ plot, resolving, isSaved, onSave, onShare, onClose }
   const ror = rec.ror.state === "ready" ? rec.ror.data : null;
   const verified = !!ror && !rec.limited && ror.success !== false;
 
+  const loggedPlot = useRef<string | null>(null);
+  useEffect(() => {
+    if (plot && rec.ror.state === "ready" && loggedPlot.current !== plot.plotNumber) {
+      loggedPlot.current = plot.plotNumber;
+      analytics.landRecordViewed({
+        plotNo: plot.plotNumber,
+        district: plot.village.districtName,
+        tahasil: plot.village.tahasilName,
+        village: plot.village.villageName,
+        isGovernmentLand: ror ? isGovernmentLand(ror) : false,
+        ownerCount: ror?.owners?.length ?? 0,
+        landClassification: ror?.land_type ?? undefined,
+      });
+    }
+  }, [plot, rec.ror.state, ror]);
+
   return (
     <aside className={`panel panel--plot ${expanded ? "is-expanded" : ""}`} aria-label={plot ? `Land details for plot ${plot.plotNumber}` : "Finding plot"}>
       {busy && <div className="panel__progress" aria-hidden="true" />}
-      <button className="panel__grab" aria-label={expanded ? "Collapse" : "Expand"} onClick={() => setExpanded(!expanded)} />
+      <button className="panel__grab" aria-label={expanded ? "Show less" : "Show the full record"} aria-expanded={expanded} onClick={() => setExpanded(!expanded)} {...swipe} />
 
-      <div className="panel__body">
-        <header className="pov">
+      <div className="panel__body" ref={bodyRef}>
+        <header className="pov" {...swipe}>
           <div className="pov__top">
             <div className="pov__id">
               {ready ? (
@@ -77,7 +107,7 @@ export function LandPanel({ plot, resolving, isSaved, onSave, onShare, onClose }
             <ValueSection value={rec.value} ror={rec.ror} plot={plot} office={rec.office} setJurisdiction={rec.setJurisdiction} isOpen={isOpen} toggle={toggle} />
             <SalesSection value={rec.value} isOpen={isOpen} toggle={toggle} />
             <RemarksSection ror={rec.ror} limited={rec.limited} plot={plot} isOpen={isOpen} toggle={toggle} />
-            <button className="rexpand" onClick={() => setOpen(allOpen ? new Set() : new Set(ALL))}>
+            <button className="rexpand" onClick={() => { setOpen(allOpen ? new Set() : new Set(ALL)); if (!allOpen && isPhone()) setExpanded(true); }}>
               <Icon name="chevronDown" size={14} strokeWidth={2.4} style={{ transform: allOpen ? "rotate(180deg)" : undefined }} />
               {allOpen ? "Collapse all sections" : "Expand all sections"}
             </button>

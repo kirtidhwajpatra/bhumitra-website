@@ -126,19 +126,3 @@
 .about li svg { color: var(--emerald); flex: none; margin-top: 2px; }
 .about__close { position: absolute; top: 16px; right: 16px; }
 .about__fine { font-size: 12.5px; margin-top: 16px !important; }
-
-/* Phones: card and sheets come up from the bottom, like the app */
-@media (max-width: 760px) {
-  .brand span, .topbar__links a:not(.btn) { display: none; }
-  .brand { padding: 0 8px; }
-  .topbar__links { padding: 0 6px; }
-  .search { flex: 1; }
-  .controls { bottom: auto; top: calc(max(12px, env(safe-area-inset-top)) + 120px); }
-  .ctrl { width: 44px; height: 44px; }
-  .plot-card { left: 0; right: 0; bottom: 0; width: 100%; border-radius: 26px 26px 0 0; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
-  .plot-card__grab { display: block; }
-  .sheet-backdrop { align-items: flex-end; }
-  .details, .picker { width: 100%; height: 92svh; border-radius: 26px 26px 0 0; animation: sheet-up .34s var(--ease); }
-  @keyframes sheet-up { from { transform: translateY(40px); opacity: 0; } }
-  .maplibregl-ctrl-bottom-right { right: 0; }
-}

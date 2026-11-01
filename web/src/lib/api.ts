@@ -94,7 +94,8 @@ export const api = {
     }),
 
   plotAtPoint: (lat: number, lng: number, signal?: AbortSignal) =>
-    request<PlotAtPointResponse>("gis/plot-at-point", { params: { lat: lat.toFixed(7), lng: lng.toFixed(7) }, signal }),
+        // Sent with the guest session so the rate limit counts this device, not a shared mobile IP.
+    request<PlotAtPointResponse>("gis/plot-at-point", { params: { lat: lat.toFixed(7), lng: lng.toFixed(7) }, auth: true, signal }),
 
   /** Full Record of Rights, using the guest session's free searches (same rules as the app). */
   ror: (v: VillageContext, plot: string, signal?: AbortSignal) => request<RoRResponse>("ror", { params: where(v, plot), auth: true, signal }),

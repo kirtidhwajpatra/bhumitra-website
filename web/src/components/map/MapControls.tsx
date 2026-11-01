@@ -15,7 +15,7 @@ interface Props {
 export function MapControls(p: Props) {
   return (
     <div className="controls" role="toolbar" aria-label="Map controls">
-      <button className="ctrl" aria-label="About Bhumitra" onClick={p.onInfo}><Icon name="info" /></button>
+      <button className="ctrl ctrl--wide" aria-label="About Bhumitra" onClick={p.onInfo}><Icon name="info" /></button>
       <button className="ctrl" aria-label={p.basemap === "satellite" ? "Show street map" : "Show satellite map"} aria-pressed={p.basemap === "streets"} onClick={p.onBasemap}>
         <Icon name="layers" />
       </button>
@@ -23,7 +23,7 @@ export function MapControls(p: Props) {
         <Icon name={p.showPlots ? "eye" : "eyeOff"} />
       </button>
       <button className={`ctrl ${p.locating ? "is-busy" : ""}`} aria-label="Go to my location" onClick={p.onLocate}><Icon name="locate" /></button>
-      <div className="ctrl-group">
+      <div className="ctrl-group ctrl--wide">
         <button className="ctrl" aria-label="Zoom in" onClick={() => p.onZoom(1)}><Icon name="plus" /></button>
         <button className="ctrl" aria-label="Zoom out" onClick={() => p.onZoom(-1)}><Icon name="minus" /></button>
       </div>

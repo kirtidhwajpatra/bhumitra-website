@@ -4,6 +4,7 @@ import { useState } from "react";
 import guides from "../../data/guides.json";
 import { Icon } from "../Icon";
 import { StoreButtons } from "../StoreButtons";
+import { useSwipe } from "./useSwipe";
 
 export const FAQS: [string, string][] = [
   ["How do I see the plot map of my land in Odisha?", "Search your village or town, tap a district on the map, or tap locate. Zoom in and every plot appears in yellow on the satellite map. Tap a plot to open its land details."],
@@ -20,17 +21,20 @@ interface Props {
   onBrowse: () => void;
   onLocate: () => void;
   onCollapse: () => void;
+  onAbout: () => void;
 }
 
-export function LandingPanel({ onDistrict, onBrowse, onLocate, onCollapse }: Props) {
+export function LandingPanel({ onDistrict, onBrowse, onLocate, onCollapse, onAbout }: Props) {
   const [open, setOpen] = useState(false);
+  // Swiping down on the small sheet tucks it away; on the open sheet it shrinks it.
+  const swipe = useSwipe(() => setOpen(true), () => (open ? setOpen(false) : onCollapse()));
   return (
     <aside className={`panel panel--landing ${open ? "is-expanded" : ""}`} aria-label="About Bhumitra">
-      <button className="panel__grab" aria-label={open ? "Collapse" : "Expand"} onClick={() => setOpen(!open)} />
+      <button className="panel__grab" aria-label={open ? "Show less" : "Show districts, guides and questions"} aria-expanded={open} onClick={() => setOpen(!open)} {...swipe} />
       <button className="landing__collapse" onClick={onCollapse} aria-label="Hide this panel" title="Hide panel">
         <Icon name="panelClose" size={18} />
       </button>
-      <div className="landing__hero">
+      <div className="landing__hero" {...swipe}>
         <p className="landing__kicker"><Icon name="pin" size={14} /> Odisha land records</p>
         <h1>Every plot in Odisha, on one map.</h1>
         <p>Tap any plot to see its owners, khata, area, land type, government value and registration cost, from Bhulekh and IGR Odisha.</p>
@@ -38,6 +42,10 @@ export function LandingPanel({ onDistrict, onBrowse, onLocate, onCollapse }: Pro
           <button className="btn btn--primary btn--sm" onClick={onLocate}><Icon name="locate" size={16} /> Plots near me</button>
           <button className="btn btn--ghost btn--sm" onClick={onBrowse}><Icon name="list" size={16} /> Choose a village</button>
         </div>
+        <button className="landing__more" aria-expanded={open} onClick={() => setOpen(!open)}>
+          {open ? "Show less" : "Districts, guides and questions"}
+          <Icon name="chevronDown" size={15} strokeWidth={2.4} />
+        </button>
       </div>
 
       <div className="panel__body">
@@ -75,12 +83,12 @@ export function LandingPanel({ onDistrict, onBrowse, onLocate, onCollapse }: Pro
         <section className="landing__block landing__app" id="get-app">
           <h2>Get the Bhumitra app</h2>
           <p>Plots near you, saved plots and land reports you can share, on your phone. Free.</p>
-          <StoreButtons compact />
+          <StoreButtons compact source="landing_panel" />
         </section>
 
         <p className="panel__source">
           <Icon name="shield" size={15} />
-          <span>Bhumitra is an independent app, not affiliated with the Government of Odisha. Records and maps are for information only. <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/support/">Support</a></span>
+          <span>Bhumitra is an independent app, not affiliated with the Government of Odisha. Records and maps are for information only. <button className="linkbtn linkbtn--inline" onClick={onAbout}>About</button> · <a href="/blog/">Guides</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/support/">Support</a></span>
         </p>
       </div>
     </aside>
