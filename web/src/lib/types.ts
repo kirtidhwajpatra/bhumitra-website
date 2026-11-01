@@ -103,7 +103,10 @@ export interface IGRCandidate {
   registration_office_name: string;
   village_id: number;
   village_name: string;
+  thana_number?: string | null;
   confidence: string;
+  score?: number;
+  match_reasons?: string[];
 }
 
 export interface BenchmarkResponse {

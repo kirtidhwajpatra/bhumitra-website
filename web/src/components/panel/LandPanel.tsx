@@ -74,7 +74,7 @@ export function LandPanel({ plot, resolving, isSaved, onSave, onShare, onClose }
             <LocationSection ror={rec.ror} plot={plot} isOpen={isOpen} toggle={toggle} />
             <OwnersSection ror={rec.ror} limited={rec.limited} isOpen={isOpen} toggle={toggle} />
             <LandSection ror={rec.ror} limited={rec.limited} plot={plot} isOpen={isOpen} toggle={toggle} />
-            <ValueSection value={rec.value} ror={rec.ror} plot={plot} jurisdiction={rec.jurisdiction} setJurisdiction={rec.setJurisdiction} isOpen={isOpen} toggle={toggle} />
+            <ValueSection value={rec.value} ror={rec.ror} plot={plot} office={rec.office} setJurisdiction={rec.setJurisdiction} isOpen={isOpen} toggle={toggle} />
             <SalesSection value={rec.value} isOpen={isOpen} toggle={toggle} />
             <RemarksSection ror={rec.ror} limited={rec.limited} plot={plot} isOpen={isOpen} toggle={toggle} />
             <button className="rexpand" onClick={() => setOpen(allOpen ? new Set() : new Set(ALL))}>

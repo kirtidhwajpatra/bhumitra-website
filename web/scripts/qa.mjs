@@ -76,6 +76,18 @@ async function run(label, viewport, mobile) {
     return `${open} sections open`;
   });
 
+  await step(`${label}: land value picks the office by itself`, async () => {
+    await page.waitForSelector(".pamber strong", { timeout: 60000 });
+    const amount = await page.textContent(".pamber strong");
+    const value = page.locator(".rsec", { hasText: "Value & registration cost" });
+    await value.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: `${OUT}${label}-3d-value.png` });
+    const village = await value.locator(".rrow", { hasText: "IGR village" }).locator(".rrow__value").textContent();
+    const options = await value.locator("select option").count();
+    return `${amount} from ${village?.trim()}, ${options} offices to choose from`;
+  });
+
   await step(`${label}: tapping another plot switches the panel`, async () => {
     const before = await page.textContent(".pov__id h2");
     const box = await page.locator(".map").boundingBox();

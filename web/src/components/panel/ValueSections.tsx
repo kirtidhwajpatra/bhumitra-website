@@ -3,8 +3,8 @@
 import { useMemo, useState } from "react";
 import { dealCosts, inr, inrShort } from "../../lib/format";
 import { areaPrimary, parseAreaSqM, SQM_PER_ACRE } from "../../lib/land";
-import type { BenchmarkResponse, Jurisdiction, RoRResponse, SelectedPlot } from "../../lib/types";
-import type { Load } from "../map/useLandRecord";
+import type { BenchmarkResponse, IGRCandidate, Jurisdiction, RoRResponse, SelectedPlot } from "../../lib/types";
+import { toJurisdiction, type Load, type OfficeChoice } from "../map/useLandRecord";
 import type { Toggle } from "./RecordSections";
 import { ActionRow, Note, Row, RowLink, Rows, Section, SectionError } from "./Section";
 
@@ -14,8 +14,23 @@ interface Props extends Toggle {
   value: Load<BenchmarkResponse>;
   ror: Load<RoRResponse>;
   plot: SelectedPlot;
-  jurisdiction: Jurisdiction | null;
+  office: OfficeChoice;
   setJurisdiction: (j: Jurisdiction | null) => void;
+}
+
+const title = (s: string) => s.toLowerCase().replace(/\b([a-z])/g, (m) => m.toUpperCase());
+
+/** "KEONJHAR NIZGARH - 129" at "KENDUJHAR" -> village "Keonjhar Nizgarh", office "Kendujhar", thana "129". */
+export function readableOffice(c: IGRCandidate) {
+  const m = c.village_name.match(/^(.*?)\s*-\s*(\d+)\s*$/);
+  const village = title((m ? m[1] : c.village_name).trim());
+  const office = title(c.registration_office_name).replace(/\bAdm\b/, "ADM");
+  return { village, office, thana: m ? m[2] : c.thana_number ?? null };
+}
+
+function optionLabel(c: IGRCandidate) {
+  const r = readableOffice(c);
+  return `${r.village}${r.thana ? ` (${r.thana})` : ""} · ${r.office} office`;
 }
 
 /** Benchmark for the recorded area when Bhulekh gave one, else the map area. */
@@ -31,10 +46,11 @@ export function benchmarkFor(b: BenchmarkResponse | null, plot: SelectedPlot, ro
   return { amount, areaLabel: sqm ? areaPrimary(sqm) : acres ? `${acres.toFixed(2)} acre (map)` : null };
 }
 
-export function ValueSection({ value, ror, plot, jurisdiction, setJurisdiction, isOpen, toggle }: Props) {
+export function ValueSection({ value, ror, plot, office, setJurisdiction, isOpen, toggle }: Props) {
   const [calc, setCalc] = useState(false);
   const b = value.state === "ready" ? value.data : null;
-  const candidates = b?.candidates ?? [];
+  const candidates = office.candidates.length ? office.candidates : b?.candidates ?? [];
+  const current = office.current ? candidates.find((c) => c.candidate_token === office.current!.token) : undefined;
   const needsOffice = b?.status === "MAPPING_REQUIRES_USER_SELECTION" || b?.status === "AMBIGUOUS";
   const { amount, areaLabel } = benchmarkFor(b, plot, ror);
   const costs = amount ? dealCosts(amount, false) : null;
@@ -43,18 +59,19 @@ export function ValueSection({ value, ror, plot, jurisdiction, setJurisdiction, 
     <label className="rselect">
       <span>{label}</span>
       <select
-        aria-label="Registration office and village"
-        value={jurisdiction?.token ?? ""}
+        aria-label="Registration office and village for the land value"
+        value={office.current?.token ?? ""}
         onChange={(e) => {
           const c = candidates.find((x) => x.candidate_token === e.target.value);
-          setJurisdiction(c ? { regoffId: c.registration_office_id, villageId: c.village_id, token: c.candidate_token, label: `${c.village_name} · ${c.registration_office_name}` } : null);
+          setJurisdiction(c ? toJurisdiction(c) : null);
         }}
       >
-        <option value="">Choose village · office</option>
-        {candidates.map((c) => <option key={c.candidate_token} value={c.candidate_token}>{c.village_name} · {c.registration_office_name}</option>)}
+        {!office.current && <option value="">Choose village · office</option>}
+        {candidates.map((c) => <option key={c.candidate_token} value={c.candidate_token}>{optionLabel(c)}</option>)}
       </select>
     </label>
   );
+  const from = current ? readableOffice(current) : null;
 
   return (
     <Section icon="rupee" title="Value & registration cost" open={isOpen("value")} onToggle={() => toggle("value")} loading={value.state === "loading"}>
@@ -70,11 +87,23 @@ export function ValueSection({ value, ror, plot, jurisdiction, setJurisdiction, 
           {costs && <Row label="Stamp duty" value={inr(costs.stamp)} caption="5%" />}
           {costs && <Row label="Registration fee" value={inr(costs.reg)} caption="2%" />}
           {costs && <Row label="Total to register" value={<b>{inr(costs.total)}</b>} />}
-          <Row label="Rate from" value={jurisdiction?.label || b.registration_office} />
-          {jurisdiction && <ActionRow label="Office"><RowLink icon="chevron" onClick={() => setJurisdiction(null)}>Change</RowLink></ActionRow>}
+          {from ? (
+            <>
+              <Row label="IGR village" value={from.village} caption={from.thana && `Thana no. ${from.thana}`} />
+              <Row label="Rate from" value={`${from.office} office`} caption={office.auto ? "Picked automatically for this plot" : "You chose this office"} />
+              {candidates.length > 1 && <div className="rrow">{officePicker("Change office")}</div>}
+            </>
+          ) : (
+            <Row label="Rate from" value={b.registration_office && `${title(b.registration_office)} office`} caption={b.village_thana && title(b.village_thana)} />
+          )}
           <ActionRow label="Your deal"><RowLink icon={calc ? "chevronDown" : "chevron"} aria-expanded={calc} onClick={() => setCalc(!calc)}>Estimate</RowLink></ActionRow>
           {calc && <CostCalculator benchmark={amount} />}
-          <Note>Official IGR benchmark for registration. It is not an open-market price; the office confirms the final figure.</Note>
+          <Note>
+            {office.auto
+              ? "Bhulekh and IGR spell village names differently, so Bhumitra matched this plot to the closest IGR village. If it looks wrong, choose the right one above. "
+              : ""}
+            Official IGR benchmark for registration. It is not an open-market price; the office confirms the final figure.
+          </Note>
         </>
       )}
 
